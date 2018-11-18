@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style/jdtbStyle.css"> <!-- DEFAULT CSS -->
+    <link rel="stylesheet" href="../style/myCustomCSS.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
+
+
+    <!-- JS -->
+    <script src="../scripts/jqueryDateTimeBooker.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerHasher.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerCalendar.js"></script>
+
+    <script src="../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+</head>
+<body>
+
+<a href="../index.html">
+    <img src="../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Datetime booker example</h3>
+<p>In this sample code, we are just creating 2 calendars , one calendar set to <b>english_us</b> language, and another set to <b>french_fr</b> language.<br/>
+    We update a custom style to the <b>english_us</b> calendar, defining calendar table and div class in constructor.
+</p>
+
+<p class="tb_code_p">
+
+</br>
+const usCalendar = new TB_Calendar("en_us",$("body"),"calendar_us_class","calendar_us_div_class");</br>
+const frCalendar = new TB_Calendar("fr_fr",$("body"),"calendar_fr_class","calendar_fr_div_class");</br>
+    </br>
+</p>
+
+
+
+
+
+
+
+<div id="jdtbErrors">
+
+</div>
+
+
+<script>
+
+
+
+    $( document ).ready(function() {
+
+        //initCalendar("fr_fr");
+        let bodySelector = $("body");
+
+
+
+        let bookableDays = [ 2,5,12,15,17,21,22 ];
+
+        let usStyleArray = ["calendar_us_class","calendar_us_div_class","calendar_us_SelectableCell","calendar_us_SelectedCell"];
+        let usCalendar = new TB_Calendar("en-US",bodySelector,usStyleArray,null);
+        //usCalendar.highlightSelectableDays(bookableDays);
+        usCalendar.setAllDaysSelectable();
+
+
+        //                           // constructor( language , selector to append calendar in , the css class for calendar, the css class for calendar parent div
+        //const usCalendar = new TB_Calendar(calendarLanguage,bodySelector,"calendar_us_class","calendar_us_div_class",bookableDays);
+        let frStyleArray = ["calendar_fr_class","calendar_fr_div_class","calendar_fr_SelectableCell","calendar_fr_SelectedCell"];
+        let frCalendar = new TB_Calendar("fr-FR",bodySelector,frStyleArray,bookableDays);
+
+
+        frCalendar.setChangeMonthCallback(changeMonthCallback);
+        frCalendar.highlightSelectableDays(bookableDays);
+
+        function changeMonthCallback(calendar,currentYear,currentMonth){
+
+            if(currentMonth === 10 && currentYear === 2018){
+                //calendar.highlightSelectableDays(bookableDays);
+                calendar.updateBookableDays(bookableDays); //
+            }else{
+                calendar.updateBookableDays([1,3,7]); // Update to new bookable days array
+                // OR
+                //calendar.updateBookableDays(); // set all month days selectable
+            }
+
+        }
+
+
+
+
+
+
+
+    });
+
+
+
+</script>
+
+
+
+</body>
+</html>

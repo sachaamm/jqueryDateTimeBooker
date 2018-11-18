@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../scripts/jqueryDateTimeBooker.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+<body>
+
+<a href="../index.html">
+    <img src="../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Datetime booker example</h3>
+
+<form>
+
+    <fieldset>
+        <legend>Starting Time ( hour : minute ) </legend>
+
+        <input type="text" id="StartingDate"/>
+
+        <input type="number" min="0" max="23" steps="1" id="StartingTimeHour" /> :
+        <input type="number" min="0" max="59" steps="1" id="StartingTimeMinute" />
+
+    </fieldset>
+
+    <br/>
+
+    <fieldset>
+        <legend>Ending Time ( hour : minute )</legend>
+
+        <input type="text" id="EndingDate"/>
+
+        <input type="number" min="0" max="23" steps="1" id="EndingTimeHour" /> :
+        <input type="number" min="0" max="59" steps="1" id="EndingTimeMinute"  />
+
+
+
+    </fieldset>
+
+    <br/>
+
+    <fieldset>
+        <legend>Booking duration</legend>
+
+        <!--
+        <input type="number" min="0" max="999" steps="1" id="BookingDurationYears" placeholder="BookingDurationYears" /> years
+        <input type="number" min="0" max="999" steps="1" id="BookingDurationMonths" placeholder="BookingDurationMonths" /> months
+        -->
+
+        <input type="number" min="0" max="999" steps="1" id="BookingDurationDays" placeholder="BookingDurationDays" /> days
+        <input type="number" min="0" max="23" steps="1" id="BookingHours" placeholder="BookingHours" /> hours
+        <input type="number" min="0" max="59" steps="1" id="BookingMinutes" placeholder="BookingMinutes" /> minutes
+
+    </fieldset>
+
+</form>
+
+<div id="jdtbErrors">
+
+</div>
+
+
+<script>
+
+    let stH = $("#StartingTimeHour");
+    let stM = $("#StartingTimeMinute");
+    let stD = $("#StartingDate");
+    let etH = $("#EndingTimeHour");
+    let etM = $("#EndingTimeMinute");
+    let etD = $("#EndingDate");
+    let bdH = $("#BookingHours");
+    let bdM = $("#BookingMinutes");
+    let bdD = $("#BookingDurationDays");
+    let bdMo = $("#BookingDurationMonths");
+    let bdY = $("#BookingDurationYears");
+
+    initJDTB('datetime','24h','d_m_y','message'); // We need to define here JDTB mode to datetime, in order to deals with dates
+    addEventsToJDateTimeBooker(stH,stM,stD,etH,etM,etD,bdH,bdM,bdD,bdMo,bdY);
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

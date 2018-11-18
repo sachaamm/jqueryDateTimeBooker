@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Example</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../scripts/jqueryDateTimeBooker.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+<body>
+
+<a href="../index.html">
+    <img src="../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Time booker example</h3>
+
+<form>
+
+    <fieldset>
+        <legend>Starting Time ( hour : minute ) </legend>
+
+        <input type="number" min="0" max="23" steps="1" id="StartingTimeHour" /> :
+        <input type="number" min="0" max="59" steps="1" id="StartingTimeMinute" />
+
+
+    </fieldset>
+
+    <br/>
+
+    <fieldset>
+        <legend>Ending Time ( hour : minute )</legend>
+
+        <input type="number" min="0" max="23" steps="1" id="EndingTimeHour" /> :
+        <input type="number" min="0" max="59" steps="1" id="EndingTimeMinute"  />
+
+        <label>Day +1</label>
+        <input type="checkbox" id="EndingDayPlusOne"/>
+
+    </fieldset>
+
+    <br/>
+
+    <fieldset>
+        <legend>Booking duration</legend>
+
+        <input type="number" min="0" max="23" steps="1" id="BookingHours" placeholder="BookingHours" /> hours
+        <input type="number" min="0" max="59" steps="1" id="BookingMinutes" placeholder="BookingMinutes" /> minutes
+
+    </fieldset>
+
+</form>
+
+<div id="jdtbErrors">
+
+</div>
+
+
+<script>
+
+    $( function() {
+        $( "#datepicker" ).datepicker();
+    } );
+
+
+    let stH = $("#StartingTimeHour");
+    let stM = $("#StartingTimeMinute");
+    let etH = $("#EndingTimeHour");
+    let etM = $("#EndingTimeMinute");
+    let etDp1 = $("#EndingDayPlusOne");
+    let bdH = $("#BookingHours");
+    let bdM = $("#BookingMinutes");
+
+    initJDTB('time_two_days','24h','m_d_y','message'); // We need to define here JDTB mode to time-to-days, in order to deals with day plus one field.
+    addEventsToJTimeTwoDaysBooker(stH,stM,etH,etM,etDp1,bdH,bdM);
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
