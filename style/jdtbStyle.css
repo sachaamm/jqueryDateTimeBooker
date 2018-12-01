@@ -24,10 +24,11 @@ body{
 .jdtb_calendar{
     background-color: aliceblue;
 }
-
+/*
 .jdtb_calendarDiv{
 
 }
+*/
 
 .jdtb_selectableCell{
     background-color: #9e98e2;
@@ -44,6 +45,9 @@ body{
     background-color: #e2b434;
 }
 
+.jdtb_submittedCell{
+    background-color: blueviolet;
+}
 
 
 .jtdb_calendarDurationDiv{

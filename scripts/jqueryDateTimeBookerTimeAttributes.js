@@ -7,6 +7,7 @@ class TB_TimeAttributes{
             "en-US": {
                 months: "January_February_March_April_May_June_July_August_September_October_November_December",
                 days: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday",
+                shortDays: "Su_Mo_Tu_We_Th_Fr_Sa",
                 firstDayOffset: 1, // Calendar begins Sunday
                 dayCalendarLabels: "AM_PM",
                 singleDayLabel: "Day selected : ",
@@ -19,6 +20,7 @@ class TB_TimeAttributes{
             "fr-FR": {
                 months: "Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre",
                 days: "Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi_Dimanche",
+                shortDays: "L_M_M_J_V_S_D",
                 firstDayOffset: 0, // Calendar begins Monday (Lundi)
                 dayCalendarLabels: "Matin_Après-Midi",
                 singleDayLabel: "Jour selectionné : ",
@@ -36,6 +38,24 @@ class TB_TimeAttributes{
         if(!this.checkLanguageExists(language))return false;
 
         let days = this.timeAttributes()[language]["days"];
+
+        let explode = days.split("_");
+
+        if(explode.length !== 7){
+            console.error("Process aborted with language " + language + " because days key doesnt contains 7 elements." );
+            return false;
+        }
+
+        return explode[index];
+
+
+    }
+
+    static getShortDayAttribute(language,index) {
+
+        if(!this.checkLanguageExists(language))return false;
+
+        let days = this.timeAttributes()[language]["shortDays"];
 
         let explode = days.split("_");
 
@@ -84,6 +104,7 @@ class TB_TimeAttributes{
 
 
     }
+
 
     static getFirstDayOffset(language){
 

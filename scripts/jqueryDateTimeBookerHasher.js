@@ -4,10 +4,21 @@ class TB_Hasher{
 
     static hash(d) {
 
-        return Math.random().toString(d).substr(2, 9);
+        return Math.random().toString(d).substr(2, 7);
 
     }
 
+    static basicHash(n){
+
+        let s = '';
+
+        for(let i = 0 ; i < n ; i++){
+            let a  = 1 + parseInt(Math.random() * 8);
+            s+=a;
+
+        }
+        return s;
+    }
 
 
 

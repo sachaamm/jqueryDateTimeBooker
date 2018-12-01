@@ -40,10 +40,10 @@
 
 <p class="tb_code_p">
 
-</br>
-const usCalendar = new TB_Calendar("en_us",$("body"),"calendar_us_class","calendar_us_div_class");</br>
-const frCalendar = new TB_Calendar("fr_fr",$("body"),"calendar_fr_class","calendar_fr_div_class");</br>
-    </br>
+<code>
+    let frCalendar = new TB_Calendar("en-US",bodySelector,styleArray,bookableDays);
+</code>
+
 </p>
 
 
@@ -57,39 +57,192 @@ const frCalendar = new TB_Calendar("fr_fr",$("body"),"calendar_fr_class","calend
 </div>
 
 
+
+<!--
+<div class="jdtb_calendar_container_div">
+
+    <div class="jdtb_calendar_leftSection">
+
+        <div class="jdtb_calendar_monthTitle_container">
+
+            <div class="jdtb_calendar_monthTitle_headerMargin"></div>
+
+            <div class="jdtb_calendar_monthTitle">
+
+                <div class="jdtb_calendar_monthTitle_leftArrowDiv">
+                    <img class="jdtb_calendar_leftIcon" />
+                </div>
+
+                <div class="jdtb_calendar_monthTitle_text">
+                    <span class="jdtb_calendar_monthTitle_textP">November 2018</span>
+                </div>
+
+                <div class="jdtb_calendar_monthTitle_rightArrowDiv">
+                    <img class="jdtb_calendar_rightIcon" />
+                </div>
+
+            </div>
+
+            <div class="jdtb_calendar_monthTitle_footerMargin"></div>
+
+        </div>
+
+        <div class="jdtb_calendar_div">
+
+            <div class="jdtb_calendar_headerMargin"></div>
+
+            <div class="jdtb_calendar">
+
+                <div class="jdtb_calendar_leftMargin"></div>
+
+                <div class="jdtb_calendar_calendar"></div>
+
+                <div class="jdtb_calendar_rightMargin"></div>
+
+            </div>
+
+            <div class="jdtb_calendar_footerMargin"></div>
+
+        </div>
+
+        <div class="jdtb_calendar_footer">
+
+            <div class="jdtb_calendar_add_container">
+                <img class="jdtb_calendar_plusIcon" />
+            </div>
+
+            <div class="jdtb_calendar_submit_container">
+                <img class="jdtb_calendar_submitIcon" />
+            </div>
+
+            <div class="jdtb_calendar_leftFooter_margin"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="jdtb_calendar_rightSection">
+
+        <div class="jdtb_calendar_right_header"></div>
+
+        <div class="jdtb_calendar_rightSection_mid">
+
+            <div class="jdtb_calendar_rightSection_mid_headerMargin"></div>
+
+            <div class="jdtb_calendar_rightSection_mid_mid">
+
+                <div class="jdtb_calendar_rightSection_mid_leftMargin"></div>
+
+                <div class="jdtb_calendar_rightSection_mid_timeMarkersContainer">
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                10/22/2018 -> 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                Wednesday 11:30AM 10/22/2018 -> Friday 11:40PM 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                Wednesday 11:30AM 10/22/2018 -> Friday 11:40PM 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                Wednesday 11:30AM 10/22/2018 -> Friday 11:40PM 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                Wednesday 11:30AM 10/22/2018 -> Friday 11:40PM 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+
+                    <div class="jdtb_calendar_rightSection_durationDiv_container">
+                        <div class="jdtb_calendar_rightSection_durationDiv_text">
+                            <span>
+                                Wednesday 11:30AM 10/22/2018 -> Friday 11:40PM 10/24/2018
+                            </span>
+                        </div>
+                        <div class="jdtb_calendar_rightSection_durationDiv_iconContainer">
+                            <img class="jdtb_calendar_rightSection_durationDiv_removeIcon" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="jdtb_calendar_rightSection_mid_rightMargin"></div>
+
+            </div>
+
+            <div class="jdtb_calendar_rightSection_mid_footerMargin"></div>
+
+        </div>
+
+        <div class="jdtb_calendar_rightSection_footer"></div>
+
+
+    </div>
+
+</div>
+-->
+
+
+
 <script>
+
+
+
 
 
 
     $( document ).ready(function() {
 
-        //initCalendar("fr_fr");
-        let bodySelector = $("body");
+        let defaultUsCalendar = new TB_Calendar(); // DEFAULT CALENDAR 
+      
+        let _frCalendarBookableDays = [ 2,3,4,5,6,7,8,9,10,11,12,15,17,21,22 ];
 
-
-
-        let bookableDays = [ 2,5,12,15,17,21,22 ];
-
-        let usStyleArray = ["calendar_us_class","calendar_us_div_class","calendar_us_SelectableCell","calendar_us_SelectedCell"];
-        let usCalendar = new TB_Calendar("en-US",bodySelector,usStyleArray,null);
-        //usCalendar.highlightSelectableDays(bookableDays);
-        usCalendar.setAllDaysSelectable();
-
-
-        //                           // constructor( language , selector to append calendar in , the css class for calendar, the css class for calendar parent div
-        //const usCalendar = new TB_Calendar(calendarLanguage,bodySelector,"calendar_us_class","calendar_us_div_class",bookableDays);
-        let frStyleArray = ["calendar_fr_class","calendar_fr_div_class","calendar_fr_SelectableCell","calendar_fr_SelectedCell"];
-        let frCalendar = new TB_Calendar("fr-FR",bodySelector,frStyleArray,bookableDays);
-
-
-        frCalendar.setChangeMonthCallback(changeMonthCallback);
-        frCalendar.highlightSelectableDays(bookableDays);
-
-        function changeMonthCallback(calendar,currentYear,currentMonth){
+        function changeMonthCallbackFunction(calendar,currentYear,currentMonth){
 
             if(currentMonth === 10 && currentYear === 2018){
                 //calendar.highlightSelectableDays(bookableDays);
-                calendar.updateBookableDays(bookableDays); //
+                calendar.updateBookableDays(_frCalendarBookableDays); //
             }else{
                 calendar.updateBookableDays([1,3,7]); // Update to new bookable days array
                 // OR
@@ -98,13 +251,66 @@ const frCalendar = new TB_Calendar("fr_fr",$("body"),"calendar_fr_class","calend
 
         }
 
+        function selectDateCallbackFunction(calendar,currentYear,currentMonth,currentDay){
 
+            console.log("Select date event is triggering a callback. ");
+            console.log("Calendar : ");
+            console.log(calendar);
+            console.log("Calendar current year : ");
+            console.log(currentYear);
+            console.log("Calendar current month : ");
+            console.log(currentMonth);
+            console.log("Calendar current day : ");
+            console.log(currentDay);
 
+        }
 
+        let frenchCalendarOptions = {
+            // Calendar Language ( Default: en-US )
+            language: "fr-FR",
+            // Node to append the calendar into ( Default: body )
+            parentNode: "body", // or #my-custom-div , etc...
+            // the selection mode, are we selecting a single date or a period ? ( duration ) ( Default: SINGLE, pick one single date / Arguments: SINGLE _ DURATION )
+            selectMode: "DURATION",
+            // Your custom css class to override default calendar style ( Default: null, fallback css classes are defining calendar style )
+            styleClassArray: {
+                // the calendar class ( Css fallback class: .jdtb_calendar)
+                calendarClass: "calendar_fr_class",
+                // the calendar div container class ( Css fallback class: .jdtb_calendarDiv)
+                calendarDivClass: "calendar_fr_div_class",
+                // the selectable cell class ( Css fallback class: .jdtb_selectableCell)
+                selectableCellClass: "calendar_fr_SelectableCell",
+                // the selected cell class ( Css fallback class: .jdtb_selectedCell)
+                selectedCellClass: "calendar_fr_SelectedCell",
+                // the submitted cell class ( Css fallback class: .jdtb_submittedCell)
+                submittedCellClass: "calendar_fr_SubmittedCell"
+            },
+            // BOOKABLE DAYS ( Default: null, all days are by default selectable)
+            //bookableDays: _frCalendarBookableDays,
+            // DATE TIME ENABLED ( Default: false )
+            dateTimeEnabled: false,
+            // MINIMAL PERIOD DURATION ( Default: null, no minimal Duration is required)
+            minimalDuration: 3,
+            // MAXIMAL PERIOD DURATION ( Default: null, no maximal Duration is required)
+            maximalDuration: 93,
+            // CHANGE MONTH CALLBACK ( Default: null, no callback )
+            //changeMonthCallback: changeMonthCallbackFunction,
+            // SELECT DATE CALLBACK ( Default: null, no callback )
+            selectDateCallback: selectDateCallbackFunction
+        };
 
+        let frCalendar = new TB_Calendar(frenchCalendarOptions);
+
+        //frCalendar.setChangeMonthCallback(changeMonthCallbackFunction);
+        //frCalendar.highlightSelectableDays(_frCalendarBookableDays); // WE SHOULD HIGHLIGHT DURING INIT ? AND CALL setAllDaysSelectable if 
+        // bookableDays are not defined.
+        //frCalendar.setSelectMode('DURATION');
+
+        
 
 
     });
+
 
 
 

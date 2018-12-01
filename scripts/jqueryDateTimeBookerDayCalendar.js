@@ -17,7 +17,7 @@ class DayCalendar{
 
         this.language = _language;
         this.dayCalendarSelector = "#DayCalendar";
-        this.uniqueId = TB_Hasher.hash(7);
+        this.uniqueId = TB_Hasher.basicHash(7);
 
         this.periods = _availibilitiesPeriods;
         this.bookingPeriods = _bookingPeriods;
@@ -234,12 +234,13 @@ class DayCalendar{
 
     static availableBooking(bookings,divideTime,startHour,startMinute,endHour,endMinute){ // check if booking is not conflicting with another one
 
-        //console.log("available booking " + startHour + " " + startMinute + " " + endHour + " " + endMinute);
+        console.log("available booking " + startHour + " " + startMinute + " " + endHour + " " + endMinute);
 
         for(let i = startHour; i <= endHour;i++){
 
             let sMinute = 0;
             if(i === startHour) sMinute = startMinute;
+            sMinute += divideTime;
             let eMinute = 60;
             if(i === endHour) eMinute = endMinute;
 
