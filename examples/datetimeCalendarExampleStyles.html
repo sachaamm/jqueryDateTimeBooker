@@ -10,6 +10,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../style/jdtbStyle.css"> <!-- DEFAULT CSS -->
     <link rel="stylesheet" href="../style/myCustomCSS.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
+    <link rel="stylesheet" href="../style/stylesLabels.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
 
 
     <!-- JS -->
@@ -34,17 +35,33 @@
 
 <h1>JQuery DateTimeBooker</h1>
 <h3>Datetime booker example</h3>
-<p>In this sample code, we are just creating 2 calendars , one calendar set to <b>english_us</b> language, and another set to <b>french_fr</b> language.<br/>
-    We update a custom style to the <b>english_us</b> calendar, defining calendar table and div class in constructor.
-</p>
 
-<p class="tb_code_p">
+<div id="styleLabelsContainer">
+    
+    <p>
+        <div class="colorLabelDiv" style="background-color:#e2667d"></div> jdtb_calendar_monthTitle_headerMargin <b> calendarMonthTitleHeaderMarginClass </b> <EM>DIV</EM>  
+    </p>
 
-<code>
-    let frCalendar = new TB_Calendar("en-US",bodySelector,styleArray,bookableDays);
-</code>
+    <p>
+        <div class="colorLabelDiv" style="background-color:#519444"></div> jdtb_calendar_monthTitle_container <b> calendarMonthTitleContainerClass </b>  <EM>DIV</EM>  
+    </p>
+    
+    <p>
+        <div class="colorLabelDiv" style="background-color:#00e24c"></div> jdtb_calendar_monthTitle_textP <b> calendarMonthTitleTextPClass </b>  <EM>DIV</EM>  
+    </p>
 
-</p>
+    <p>
+        <div class="colorLabelDiv" style="background-color:#9e98e2"></div> jdtb_calendar_monthTitle_footerMargin <b> calendarMonthTitleFooterMarginClass </b> <EM>DIV</EM>  
+    </p>
+
+    <p>
+        <div class="colorLabelDiv" style="background-color:#9e98e2"></div> jdtb_calendar_monthTitle_footerMargin <b> calendarMonthTitleFooterMarginClass </b> <EM>DIV</EM>  
+    </p>
+    
+
+</div>
+
+
 
 
 
@@ -61,10 +78,7 @@
 
     $( document ).ready(function() {
 
-        //let defaultUsCalendar = new TB_Calendar(); // DEFAULT CALENDAR 
-      
-        let _frCalendarBookableDays = [ 2,3,4,5,6,7,8,9,10,11,12,15,17,21,22,23,24,25,26,27,28,29,30 ];
-
+        //let defaultUsCalendar = new TB_Calendar(); // DEFAULT CALENDAR  
         function changeMonthCallbackFunction(calendar,currentYear,currentMonth){
      
             let currentFake = getCurrentBookable(currentYear,currentMonth);
@@ -80,7 +94,6 @@
                 calendar.checkPeriodConinuity(bookablePeriod);
                 console.log(bookablePeriod);           
             }
-
 
         }
 
@@ -117,7 +130,8 @@
                 // the selected cell class ( Css fallback class: .jdtb_selectedCell)
                 selectedCellClass: "calendar_fr_SelectedCell",
                 // the submitted cell class ( Css fallback class: .jdtb_submittedCell)
-                submittedCellClass: "calendar_fr_SubmittedCell"
+                submittedCellClass: "calendar_fr_SubmittedCell",
+                // 
             },
             */
             // BOOKABLE DAYS ( Default: null, all days are by default selectable)
@@ -132,7 +146,7 @@
             // CHANGE MONTH CALLBACK ( Default: null, no callback )
             changeMonthCallback: changeMonthCallbackFunction,
             // SELECT DATE CALLBACK ( Default: null, no callback )
-            // selectDateCallback: selectDateCallbackFunction // actually useless , but for example you can change the calendar style with specific month.
+            selectDateCallback: selectDateCallbackFunction
         };
 
         let frCalendar = new TB_Calendar(frenchCalendarOptions);
@@ -144,21 +158,16 @@
 
     });
 
-
     let fakeBookableDays = {
-
             "2018_10":{
                 bookableDays:[1,2,3,5,6,8,9]
             },
-
             "2018_11":{
                 bookableDays:[3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,26,27,28,29,30,31]
             },
-
             "2019_0":{
-                bookableDays:[1,2,3,4,5,14,16,17,18,19,20,21,26,27,28,29,30,31]
+                bookableDays:[1,2,3,4,5,14,16]
             }
-
     };
 
     //getCurrentBookable(2018,10);
@@ -170,17 +179,12 @@
         monthGap += yearGap * 12;
         console.log("month gap " + monthGap);
         console.log("year gap " + yearGap);
-
         let _Month = monthA;
         let _Year = yearA;
-
         let bookablePeriod = [];
         
-
-
         for(let i = 0 ; i < monthGap; i++){
 
-            
             _Month++;
             if(_Month>= 12){
                 _Month-=12;
@@ -192,7 +196,6 @@
         }
 
         return bookablePeriod;
-
     }
 
     function getCurrentBookable(year,month){

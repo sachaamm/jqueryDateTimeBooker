@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="../style/jdtbStyle.css">
+
+    <script src="../scripts/jqueryDateTimeBooker.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerCalendar.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerDayCalendar.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerFormField.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerHasher.js"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    -->
+
+</head>
+<body>
+
+<a href="../index.html">
+    <img src="../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Datetime booker example</h3>
+
+
+
+<div id="CalendarDiv">
+
+    <h2 id="calendarTitle"></h2>
+
+
+    <table id="DayCalendar">
+    </table>
+
+</div>
+
+<input id="tb_calendar_input" type="text" />
+
+
+
+<script>
+
+
+
+    $( document ).ready(function() {
+
+        let dayCalendarOptions = {
+            language: "fr-FR",
+            bookablePeriods: [
+            "6:10 9:30","10:30 12:00","14:00 16:30"
+            ],
+            bookedPeriods: [
+            "6:35 7:55","10:40 10:55","15:10 15:40"
+            ],
+            segmentTime: 2,
+            fullDay: true,
+            minimalDuration: 10,
+            selectMode:"DURATION"
+        };
+
+        //const dayCalendar = new DayCalendar(dayCalendarOptions);
+        //dayCalendar.setSelectMode('DURATION');
+
+        function changeMonthCallbackFunction(calendar,currentYear,currentMonth){
+     
+            let currentFake = getCurrentBookable(currentYear,currentMonth);
+            calendar.updateBookableDays(currentFake); //
+
+            let currentSelectedMonth = calendar.currentSelectedMonth;
+            let currentSelectedYear = calendar.currentSelectedYear;
+     
+            let bookablePeriod;
+
+            if(this.currentSelectedMonth && this.currentSelectedYear){
+                bookablePeriod = getBookableDaysPeriod(currentSelectedYear,currentSelectedMonth,currentYear,currentMonth);
+                calendar.checkPeriodConinuity(bookablePeriod);
+                console.log(bookablePeriod);           
+            }
+
+        }
+
+        function selectDateCallbackFunction(calendar,currentYear,currentMonth,currentDay){
+
+            //alert("eee");
+            TB_AppendTimeMarker(calendar.uniqueId);
+            formField.selectDayPeriod();
+
+        }
+
+        let frenchCalendarOptions = {
+            language: "fr-FR",
+            parentNode: "body", 
+            selectMode: "SINGLE",
+            bookableDays: getCurrentBookable(new Date().getFullYear(),new Date().getMonth()),
+            dateTimeEnabled: false,
+            minimalDuration: 3,
+            maximalDuration: 93,
+            changeMonthCallback: changeMonthCallbackFunction,
+            selectDateCallback: selectDateCallbackFunction
+                   
+        };
+
+        //let frCalendar = new TB_Calendar(frenchCalendarOptions);
+        
+        let formField = new TB_FormField('#tb_calendar_input',new TB_Calendar(frenchCalendarOptions),new TB_DayCalendar(dayCalendarOptions));
+        
+
+    });
+
+
+
+let fakeBookableDays = {
+
+    "2018_10":{
+        bookableDays:[1,2,3,5,6,8,9]
+    },
+
+    "2018_11":{
+        bookableDays:[3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,26,27,28,29,30,31]
+    },
+
+    "2019_0":{
+        bookableDays:[1,2,3,4,5,14,16,17,18,19,20,21,26,27,28,29,30,31]
+    }
+
+};
+
+//getCurrentBookable(2018,10);
+
+function getBookableDaysPeriod(yearA,monthA,yearB,monthB){
+    let yearGap = yearB - yearA;
+    let monthGap = monthB - monthA;
+    monthGap += yearGap * 12;
+    let _Month = monthA;
+    let _Year = yearA;
+    let bookablePeriod = [];
+    for(let i = 0 ; i < monthGap; i++){
+        _Month++;
+        if(_Month>= 12){
+            _Month-=12;
+            _Year++;
+        }
+        bookablePeriod.push(getCurrentBookable(_Year,_Month));
+    }
+    return bookablePeriod;
+}
+
+function getCurrentBookable(year,month){
+    if(fakeBookableDays.hasOwnProperty(year+"_"+month))  return fakeBookableDays[year+"_"+month]["bookableDays"];
+    return getFakeBookableDays();
+}
+
+function getFakeBookableDays(){
+    return [1,2,3,4,5,6,11,13,15,16];
+}
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

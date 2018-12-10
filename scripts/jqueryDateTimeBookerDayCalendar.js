@@ -9,18 +9,15 @@
                     // Définir un nombre maximal d'utilisateurs pour une période bookée ( par défaut 1 )
 
 
-class DayCalendar{
+class TB_DayCalendar{
 
 
     // language, availabilities, booking, divideTime, fullDay, dureeMinimaleReservation, dureeMaximaleReservation
-    constructor(_language,_availibilitiesPeriods, _bookingPeriods,_segmentTime, _fullDay,_dureeMinimale){
+    //constructor(_language,_bookablePeriods, _bookedPeriods,_segmentTime, _fullDay,_dureeMinimale){
+    constructor(_options){
 
-        this.language = _language;
-        this.dayCalendarSelector = "#DayCalendar";
+        
         this.uniqueId = TB_Hasher.basicHash(7);
-
-        this.periods = _availibilitiesPeriods;
-        this.bookingPeriods = _bookingPeriods;
 
         this.bookingStartHour = null;
         this.bookingStartMinute = null;
@@ -31,17 +28,32 @@ class DayCalendar{
         this.selectStep = 0;
         this.availabilityIndex = null;
 
-        this.minimalDuration = _dureeMinimale;
+        this.language = _options.hasOwnProperty("language") ? _options["language"] : 'en-US';
+        this.bookablePeriods = _options.hasOwnProperty("bookablePeriods") ? _options["bookablePeriods"] : [];
+        this.bookedPeriods = _options.hasOwnProperty("bookedPeriods") ? _options["bookedPeriods"] : [];
+        this.segmentTime = _options.hasOwnProperty("segmentTime") ? _options["segmentTime"] : 'en-US';
+        this.fullDay = _options.hasOwnProperty("fullDay") ? _options["fullDay"] : true;
+        this.minimalDuration = _options.hasOwnProperty("minimalDuration") ? _options["minimalDuration"] : 0;
+        this.selectMode = _options.hasOwnProperty("selectMode") ? _options["selectMode"] : "SINGLE"; // SINGLE / DURATION
 
-        this.fullDay = _fullDay;
-        //this.eventDuration = _eventDuration;
+        
+        let bodyContainer = _options.hasOwnProperty("containerParent") ? _options["containerParent"] : "body"; // SINGLE / DURATION
+        let dayCalendarContainerNode = "<div id='jdtb_daycalendar_container_"+this.uniqueId+"'></div>";
+        $(bodyContainer).append(dayCalendarContainerNode);
+        let dayCalendarContainerSelector = $("#jdtb_daycalendar_container_" + this.uniqueId);
+        dayCalendarContainerSelector.append("<h2></h2>");
+
+        this.tableNode = "<table id='DayCalendar_" + this.uniqueId + "' class='DayCalendar'></table>";
+        dayCalendarContainerSelector.append(this.tableNode);
+
+        this.dayCalendarSelector = "#DayCalendar_" + this.uniqueId + "";
+
 
         let appendHeadDayCalendar = "<tr>";
         //  -   /   matin / apres-midi
-        appendHeadDayCalendar+= "<th>.</th>";
+        appendHeadDayCalendar+= "<th> </th>";
 
-        this.segmentTime = _segmentTime;
-
+     
 
         for(let i=0; i< 60;i+=this.segmentTime){
             appendHeadDayCalendar+= "<th>"+i+"</th>";
@@ -53,15 +65,15 @@ class DayCalendar{
         $(this.dayCalendarSelector).append(appendHeadDayCalendar);
 
         let nbHours = 12;
-        if(_fullDay) nbHours = 24;
+        if(this.fullDay) nbHours = 24;
 
         for(let i = 0 ; i < nbHours ; i++){
 
             let newLine = "<tr>";
-            newLine+="<td >"+ TB_TimeAttributes.getHourLabel(this.language,i)+"</td>";
+            newLine+="<td class='DayCalendar_hourLabel'>"+ TB_TimeAttributes.getHourLabel(this.language,i)+"</td>";
 
             for(let j = 1; j < timeSegmentsCount + 1 ; j++){
-                let content  = ".";
+                let content  = "";
                 let td_class = "x";
 
                 let nextHour = i;
@@ -72,22 +84,22 @@ class DayCalendar{
                 let cellHour = i;
                 let cellMinute = j * this.segmentTime - this.segmentTime;
 
-                if(DayCalendar.isAvailableTimeSegment(_availibilitiesPeriods,cellHour,cellMinute + this.segmentTime,cellHour,cellMinute + this.segmentTime)){
+                if(TB_DayCalendar.isAvailableTimeSegment(this.bookablePeriods,cellHour,cellMinute + this.segmentTime,cellHour,cellMinute + this.segmentTime)){
 
                     let addDureeMinimale = 0;
-                    if(_dureeMinimale) addDureeMinimale = _dureeMinimale;
+                    if(this.minimalDuration) addDureeMinimale = this.minimalDuration;
 
-                    if(DayCalendar.isBookedTimeSegment(_bookingPeriods,cellHour,cellMinute + this.segmentTime,cellHour,cellMinute + this.segmentTime)){
+                    if(TB_DayCalendar.isBookedTimeSegment(this.bookedPeriods,cellHour,cellMinute + this.segmentTime,cellHour,cellMinute + this.segmentTime)){
                         td_class="DayCalendar_bookedTimeSegment";
                     }else{
 
-                        let currentAvailabilityPeriodIndex = DayCalendar.returnAvailabilityPeriodIndex(_availibilitiesPeriods,cellHour,cellMinute,cellHour,cellMinute);
-                        //console.log("Cell hour " + cellHour + " cell minute " + cellMinute + " capi " + currentAvailabilityPeriodIndex);
+                        let currentAvailabilityPeriodIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,cellHour,cellMinute,cellHour,cellMinute);
+
                         let isNonSelectable = false;
 
 
                         let deltaMinuteBeforePeriodEnd = 0;
-                        let periodEnd = DayCalendar.getPeriodEnd(_availibilitiesPeriods,currentAvailabilityPeriodIndex);
+                        let periodEnd = TB_DayCalendar.getPeriodEnd(this.bookablePeriods,currentAvailabilityPeriodIndex);
 
                         let ePE = periodEnd.split(":");
                         let periodEndHour = parseInt(ePE[0]);
@@ -98,14 +110,12 @@ class DayCalendar{
 
                         let deltaPEInMinutes = deltaMinutePE + deltaHourPE * 60;
 
-                        //console.log("Period end " + periodEnd + " // " + cellHour + ":" + cellMinute + " deltaPEInMinutes " + deltaPEInMinutes);
-                        //deltaMinuteBeforePeriodEnd =
-                        if(deltaPEInMinutes < _dureeMinimale){
+     
+                        if(deltaPEInMinutes < this.minimalDuration){
                             isNonSelectable = true;
                         }
 
-
-                        for(let k = 0 ; k < _dureeMinimale; k+=  this.segmentTime){
+                        for(let k = 0 ; k < this.minimalDuration; k+=  this.segmentTime){
 
                             let endDurationHour = cellHour;
                             let endDurationMinute = cellMinute + this.segmentTime + k;
@@ -115,9 +125,9 @@ class DayCalendar{
                                 endDurationMinute-=60;
                             }
 
-                            if(DayCalendar.isBookedTimeSegment(_bookingPeriods,endDurationHour,endDurationMinute  ,endDurationHour,endDurationMinute  )) {
+                            if(TB_DayCalendar.isBookedTimeSegment(this.bookedPeriods,endDurationHour,endDurationMinute  ,endDurationHour,endDurationMinute  )) {
 
-                                let actualAvailabilityPeriodIndex = DayCalendar.returnAvailabilityPeriodIndex(_availibilitiesPeriods,endDurationHour,endDurationMinute);
+                                let actualAvailabilityPeriodIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,endDurationHour,endDurationMinute);
 
                                 if(actualAvailabilityPeriodIndex === currentAvailabilityPeriodIndex){
                                     isNonSelectable = true;
@@ -128,13 +138,8 @@ class DayCalendar{
                         }
 
                         if(isNonSelectable){
-
-                            //console.log("non selectable");
-
                             td_class="DayCalendar_availableTimeSegmentNonSelectable";
                             onClickEvent = 'prepare_onclick="TB_SelectDayTimeBookerPeriod('+ this.uniqueId + ',' + cellHour + ',' + cellMinute + ')"';
-                            //onClickEvent = '';
-
                         }else{
                             td_class="DayCalendar_availableTimeSegment";
                             onClickEvent = 'onclick="TB_SelectDayTimeBookerPeriod('+ this.uniqueId + ',' + cellHour + ',' + cellMinute + ')"';
@@ -156,14 +161,11 @@ class DayCalendar{
 
         TB_PushDayTimeBooker(this);
 
-
     }
 
     setSelectMode(_selectMode){
-
         // SINGLE/ DURATION
         this.selectMode = _selectMode;
-
     }
 
 
@@ -221,7 +223,6 @@ class DayCalendar{
 
             if(hour >bookingStartHour && hour <bookingEndHour) return true;
 
-
             if(hour === bookingEndHour && hour > bookingStartHour){
                 if(minuteB <= bookingEndMinute)return true;
             }
@@ -245,7 +246,7 @@ class DayCalendar{
             if(i === endHour) eMinute = endMinute;
 
             for(let j = sMinute ; j < eMinute ; j+= divideTime){
-                if(DayCalendar.isBookedTimeSegment(bookings,i,j,i,j)){
+                if(TB_DayCalendar.isBookedTimeSegment(bookings,i,j,i,j)){
                     console.log("Available booking ? " + i + " h : " + j);
                     return false;
                 }
@@ -286,42 +287,24 @@ class DayCalendar{
     }
 
     static getPeriodEnd(availabilities, availabilityPeriodIndex){
-
-        /*
-        console.log("availabilities");
-        console.log(availabilities);
-        console.log("availability period index");
-        console.log(availabilityPeriodIndex);
-
-        console.log(availabilities[availabilityPeriodIndex]);
-        */
         return availabilities[availabilityPeriodIndex].split(" ")[1];
-
     }
-
 
     get test(){
         return this.myTest();
     }
 
-
     static myTest(){
-
         alert("e");
-
     }
-
 
     setVisibility(state){
-
-        $("#DayCalendar").css("display",state);
+        $("#DayCalendar_"+this.uniqueId).css("display",state);
     }
-
-
 
     activateTimeSegmentNonSelectable(){
 
-        $("#DayCalendar .DayCalendar_availableTimeSegmentNonSelectable").each(function(index){
+        $("#DayCalendar_"+this.uniqueId+" .DayCalendar_availableTimeSegmentNonSelectable").each(function(index){
 
             //console.log($(this).attr("id"));
             let onclick = $(this).attr("prepare_onclick");
@@ -375,9 +358,9 @@ class DayCalendar{
                 this.bookingStartMinute = minute;
 
                 $("#DayCalendar_" + hour + "_" + minute).css("background-color","blue");
-                //console.log(this.periods);
+                //console.log(this.bookablePeriods);
 
-                this.availabilityIndex = DayCalendar.returnAvailabilityPeriodIndex(this.periods,hour,minute,hour,minute);
+                this.availabilityIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,hour,minute,hour,minute);
 
                 //alert("availability index " + this.availabilityIndex);
                 // NOW THAT WE KNOW OUR BEGINNING , WE MUST CONSIDER DISABLED NON SELECTABLE ( EX : TIME SEGMENTS AFTER A BOOKED DURATION )
@@ -387,7 +370,7 @@ class DayCalendar{
                 this.disableNonSelectableTimeSegments();
 
                 // CHECK  IF HOUR AND MINUTE IS IN PERIOD SELECTED
-                let endAvailabilityIndex = DayCalendar.returnAvailabilityPeriodIndex(this.periods,hour,minute,hour,minute);
+                let endAvailabilityIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,hour,minute,hour,minute);
 
                 if(endAvailabilityIndex !== this.availabilityIndex){
                     alert("You must select booking end in same period");
@@ -411,7 +394,7 @@ class DayCalendar{
                     return;
                 }
 
-                if(!DayCalendar.availableBooking(this.bookingPeriods,this.segmentTime,this.bookingStartHour,this.bookingStartMinute,this.bookingEndHour,this.bookingEndMinute)){
+                if(!TB_DayCalendar.availableBooking(this.bookedPeriods,this.segmentTime,this.bookingStartHour,this.bookingStartMinute,this.bookingEndHour,this.bookingEndMinute)){
                     alert("This booking is conflicting with another one");
                     return;
                 }
@@ -456,11 +439,11 @@ class DayCalendar{
     }
 
     unselectPreviousPeriod(){
-        $("#DayCalendar td").removeAttr("style");
+        $("#DayCalendar_" + this.uniqueId + " td").removeAttr("style");
     }
 
     disableNonSelectableTimeSegments(){
-        $("#DayCalendar .DayCalendar_availableTimeSegmentNonSelectable").off();
+        $("#DayCalendar_" + this.uniqueId + " .DayCalendar_availableTimeSegmentNonSelectable").off();
     }
 
 

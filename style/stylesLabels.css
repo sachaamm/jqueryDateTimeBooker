@@ -1,0 +1,15 @@
+#styleLabelsContainer{
+
+
+    position:absolute;
+    left:50%;
+    top:10%;
+
+}
+
+.colorLabelDiv{
+
+    width: 2vw;
+    height: 1vw;
+
+}

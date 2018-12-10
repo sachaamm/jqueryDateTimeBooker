@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../style/jdtbStyle.css"> <!-- DEFAULT CSS -->
+    <link rel="stylesheet" href="../../style/myCustomCSS.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
+
+
+    <!-- JS -->
+    <script src="../../scripts/jqueryDateTimeBooker.js"></script>
+    <script src="../../scripts/jqueryDateTimeBookerHasher.js"></script>
+    <script src="../../scripts/jqueryDateTimeBookerCalendar.js"></script>
+
+    <script src="../../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+<body>
+
+<a href="../../index.html">
+    <img src="../../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Datetime booker example</h3>
+<p>In this sample code, we are just creating 2 calendars , one calendar set to <b>english_us</b> language, and another set to <b>french_fr</b> language.<br/>
+    We update a custom style to the <b>english_us</b> calendar, defining calendar table and div class in constructor.
+</p>
+
+<p class="tb_code_p">
+
+<code>
+    let frCalendar = new TB_Calendar("en-US",bodySelector,styleArray,bookableDays);
+</code>
+
+</p>
+
+
+<div id="jdtbErrors">
+
+</div>
+
+
+
+
+
+<script>
+
+
+
+    $( document ).ready(function() {
+
+        let defaultUsCalendar = new TB_Calendar(); // DEFAULT CALENDAR 
+      
+    });
+       
+</script>
+
+
+
+</body>
+</html>

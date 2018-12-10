@@ -61,23 +61,24 @@
 
     $( document ).ready(function() {
 
-        let bodySelector = $("body");
 
-        let calendarLanguage = "fr-FR";
+        let dayCalendarOptions = {
 
-        let dayAvailabilitiesPeriods = [
+            language: "fr-FR",
+            bookablePeriods: [
             "6:10 9:30","10:30 12:00","14:00 16:30"
-        ];
-
-        let divideTime = 2; // event duration in minutes
-
-        let dayBookingPeriods = [
+            ],
+            bookedPeriods: [
             "6:35 7:55","10:40 10:55","15:10 15:40"
-        ];
+            ],
+            segmentTime: 2,
+            fullDay: true,
+            minimalDuration: 10
 
-        let dureeMinimale = 20;
+        };
 
-        const dayCalendar = new DayCalendar(calendarLanguage,dayAvailabilitiesPeriods,dayBookingPeriods,divideTime,true,dureeMinimale);
+        //const dayCalendar = new DayCalendar(calendarLanguage,dayAvailabilitiesPeriods,dayBookingPeriods,divideTime,true,dureeMinimale);
+        const dayCalendar = new DayCalendar(dayCalendarOptions);
         dayCalendar.setSelectMode('DURATION');
 
 

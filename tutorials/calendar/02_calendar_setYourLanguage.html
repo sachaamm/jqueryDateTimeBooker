@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../style/jdtbStyle.css"> <!-- DEFAULT CSS -->
+    <link rel="stylesheet" href="../../style/myCustomCSS.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
+
+
+    <!-- JS -->
+    <script src="../../scripts/jqueryDateTimeBooker.js"></script>
+    <script src="../../scripts/jqueryDateTimeBookerHasher.js"></script>
+    <script src="../../scripts/jqueryDateTimeBookerCalendar.js"></script>
+
+    <script src="../../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+<body>
+
+<a href="../">
+    <img src="../../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>Specific calendar language example</h3>
+<p>In this sample code, we are defining calendar language, giving options argument when creating our <b>TB_Calendar</b> instance. <br/>
+
+</p>
+
+<p class="tb_code_p">
+<!--
+<code>
+    let frCalendar = new TB_Calendar("en-US",bodySelector,styleArray,bookableDays);
+</code>
+-->
+</p>
+
+
+<div id="jdtbErrors"></div>
+
+
+<script>
+
+    $( document ).ready(function() {
+
+        let calendarOptions = {
+            // Calendar Language ( Default: en-US )
+            language: "fr-FR",
+        };
+
+        let frCalendar = new TB_Calendar(calendarOptions); // CALENDAR BASED IN FRENCH LANGUAGE, WEEKS START ON MONDAY
+      
+    });
+       
+</script>
+
+
+</body>
+</html>

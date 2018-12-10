@@ -10,13 +10,6 @@
     src: url(fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf);
 }
 
-body{
-    font-family: RobotoCondensed, serif;
-}
-
-
-
-
 
 
 
@@ -31,22 +24,24 @@ body{
 */
 
 .jdtb_selectableCell{
-    background-color: #9e98e2;
+    background-color: #ec9784;
+    color:white !important;
 }
 
 .jdtb_selectableCell:hover{
-    background-color: #0098e2;
-    color:white;
+    background-color: #f54017;
+    
     cursor:pointer;
 }
 
 .jdtb_selectedCell{
 
-    background-color: #e2b434;
+    background-color: black;
+    color:white !important;
 }
 
 .jdtb_submittedCell{
-    background-color: blueviolet;
+    background-color: #c22400;
 }
 
 
@@ -64,14 +59,448 @@ body{
 
 }
 
-#DayCalendar{
 
-    background-color: aliceblue;
+
+
+/* FAKE CALENDAR */
+.jdtb_calendar_container_div{
+
+    /* background-color: #e2b434; */
+    width:32vw;
+    height:37vh;
+    display:flex;
+}
+
+.jdtb_calendar_leftSection{
+
+    /* background-color: #9e98e2; */
+    width:62%;
+    height:100%;
+    display:flex;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+
+/* MONTH TITLE */
+.jdtb_calendar_monthTitle_container{
+
+    /* background-color:  #519444; */
+    background-color: #ef5f40; 
+    width:100%;
+    height:15%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.jdtb_calendar_monthTitle_headerMargin{
+    /* background-color: #e2667d; */
+    
+    width:100%;
+    height:10%;
+}
+
+.jdtb_calendar_monthTitle{
+    /* background-color: #0098e2; */
+    width:100%;
+    height:80%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.jdtb_calendar_monthTitle_leftArrowDiv{
+    /* background-color: #e2b434; */
+    width:15%;
+    height:100%;
+    position: relative;
+}
+
+.jdtb_calendar_leftIcon{
+    max-height: 70%;
+    max-width: 70%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+    content:url("../icons/leftArrow2.png");
+}
+
+.jdtb_calendar_monthTitle_text{
+    /* background-color: #e23a00; */
+    width:70%;
+    height:100%;
+    display:table;
+}
+
+.jdtb_calendar_monthTitle_textP{
+    text-align:center;
+    vertical-align: middle;
+    /* background-color: #00e24c; */
+    display:table-cell;
+    font-size:1.6vw;
+    color:white;
+}
+
+.jdtb_calendar_monthTitle_rightArrowDiv{
+    /* background-color: #ecddb2; */ 
+    width:15%;
+    height:100%;
+    position:relative;
+}
+
+.jdtb_calendar_rightIcon{
+    max-height: 70%;
+    max-width: 70%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+    content:url("../icons/rightArrow2.png");
+}
+
+.jdtb_calendar_centeredImg{
+    max-height: 50%;
+    max-width: 50%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+}
+
+
+.jdtb_calendar_monthTitle_footerMargin{
+    /* background-color: #9e98e2; */ 
+    width:100%;
+    height:10%;
+}
+
+/* CALENDAR DIV */
+.jdtb_calendar_div{
+    /* background-color: #107800; */
+    width:100%;
+    height:70%;
+}
+
+.jdtb_calendar_headerMargin{
+    /* background-color: #e2b434; */
+    width:100%;
+    height:5%;
+}
+
+.jdtb_calendar{
+    /* background-color: #e23a00; */
+    width:100%;
+    height:90%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.jdtb_calendar_footerMargin{
+    /* background-color: #e2667d; */
+    width:100%;
+    height:5%;
+}
+
+.jdtb_calendar_leftMargin{
+    /* background-color: #e20001; */
+    width:5%;
+    height:100%;
+}
+
+.jdtb_calendar_calendar{
+    /* background-color: #912f8c; */
+    width:90%;
+    height:100%;
+}
+
+
+.jdtb_calendar_calendar_table{
+    /* background-color: #11c4a6; */
+    width:100%;
+
+}
+
+
+
+.jdtb_calendar_calendar_table>tr>td{    
+   text-align: center;
+}
+
+
+
+
+.jdtb_calendar_rightMargin{
+    /* background-color: #9e98e2; */
+    width:5%;
+    height:100%;
+}
+
+/* FOOTER */
+.jdtb_calendar_footer{
+    /* background-color: #0c3a80; */
+    /* background-color: #782638; */
+    background-color: #ef5f40; 
+    width:100%;
+    height:15%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.jdtb_calendar_add_container{
+    /* background-color: #e2b434; */
+    width:15%;
+    height:100%;
+    position:relative;
+}
+
+.jdtb_calendar_plusIcon{
+    max-height: 60%;
+    max-width: 60%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+    content:url("../icons/plus2.png");
+}
+
+
+.jdtb_calendar_submit_container{
+    /* background-color: #9ae2b1; */
+    width:15%;
+    height:100%;
+    position:relative;
+
+}
+
+.jdtb_calendar_submitIcon{
+    max-height: 60%;
+    max-width: 60%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+    content:url("../icons/submit.png");
+}
+
+.jdtb_calendar_leftFooter_margin{
+    width:70%;
+    height:100%;
+}
+
+.jdtb_calendar_rightSection{
+
+    /* background-color: #a0bfe7; */
+    width:38%;
+    height:100%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+
+.jdtb_calendar_right_header{
+    /* background-color: #2819d1; */
+    background-color: #ef5f40; 
+    width:100%;
+    height:15%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.jdtb_calendar_right_header_startDateText{
+    width:100%;
+    height:50%;
+    text-align: center;
+}
+
+
+.jdtb_calendar_right_header_endDateText{
+    width:100%;
+    height:50%;
+    text-align: center;
+}
+
+
+
+
+.jdtb_calendar_rightSection_mid{
+    /* background-color: #e2e2ba; */
+    width:100%;
+    height:70%;
+}
+
+.jdtb_calendar_rightSection_mid_headerMargin{
+    /* background-color: #8dd8e2; */
+    width:100%;
+    height:1%;
+}
+
+.jdtb_calendar_rightSection_mid_footerMargin{
+
+    width:100%;
+    height:1%;
+}
+
+.jdtb_calendar_rightSection_mid_mid{
+    /* background-color: #56e252; */
+    width:100%;
+    height:98%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.jdtb_calendar_rightSection_mid_leftMargin{
+    /* background-color: #488be2; */
+    width:5%;
+    height:100%;
+
+}
+
+.jdtb_calendar_rightSection_mid_rightMargin{
+    /* background-color: #8d44e2; */
+    width:0%;
+    height:100%;
+
+}
+
+.jdtb_calendar_rightSection_mid_timeMarkersContainer{
+    /* background-color: #e2b434; */
+    width:95%;
+    height:100%;
+    overflow-y: scroll;
+}
+
+
+.jdtb_calendar_rightSection_durationDiv_container{
+    /* background-color: #107800; */
+    text-align: center;
+    font-size: 0.7vw;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:100%;
+    height:20%;
+    margin-bottom: 1%;
+}
+
+.jdtb_calendar_rightSection_durationDiv_text{
+    /*background-color: #ee756b;*/
+    text-align: center;
+    width:90%;
+    height:100%;
+    display: table;
+}
+
+
+.jdtb_calendar_rightSection_durationDiv_text>span{
+    text-align:center;
+    vertical-align: middle;
+    background-color: #f17155;
+    display:table-cell;
+    font-size:0.7vw;
+    border-radius: 10px;
+    cursor:pointer;
+
+}
+
+.jdtb_calendar_rightSection_durationDiv_text>span:hover{
+    /* background-color: #524e81; */
+    background-color: #f54017;
+    color:white;
+    transition:1s;
+}
+
+.jdtb_calendar_rightSection_durationDiv_iconContainer{
+    /* background-color: #6fc880; */
+    width:10%;
+    height:100%;
+    position:relative;
+
+    /* content:url("../icons/erase.svg"); */
+}
+
+.jdtb_calendar_rightSection_durationDiv_removeIcon{
+    content:url("../icons/erase.svg");
+    max-height: 70%;
+    max-width: 70%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor:pointer;
+}
+
+
+.jdtb_calendar_rightSection_footer{
+    background-color: #ef5f40; 
+    width:100%;
+    height:15%;
+}
+
+
+
+
+/* DAYCALENDAR */
+
+.DayCalendar{
+
+    background-color: rgb(243, 243, 243);
     width:400px;
     border-spacing: 0px;
 }
 
-#DayCalendar td{
+.DayCalendar th{
+
+    /* border: solid 1px rgb(214, 94, 47); */
+    background-color: #ef5f40;
+    width:5%;
+    min-width:15px;
+    color: white;
+
+}
+
+.DayCalendar td{
 
     border: solid 1px rgba(146, 146, 146, 0);
     width:5%;
@@ -83,18 +512,20 @@ body{
 
     background-color: #e2d430;
     cursor: pointer;
+    border:solid 1px rgb(252, 101, 41) !important;
+    border-radius: 2px
 }
 
 .DayCalendar_availableTimeSegmentNonSelectable{
 
     background-color: #e2b434;
-    /* cursor: pointer; */
+    
 }
 
 
 .DayCalendar_availableTimeSegment:hover{
 
-    background-color: #e23a00;
+    background-color: #ef5f40;
 
 }
 
@@ -104,18 +535,15 @@ body{
 
 }
 
+.DayCalendar_hourLabel{
 
-.jtdb_addDurationDivButton{
-/*
-    background-color: #b6e20c;
-    border-radius: 10px;
-    text-align: center;
-*/
+    background-color: #ef5f40;
+    width:5%;
+    min-width:15px;
+    color: white;
+    font-weight: bold;
+    padding: 0.2vw;
+    font-size:0.7vw;
+
+
 }
-
-
-/*
-td{
-    cursor: pointer;
-}
-*/
