@@ -37,23 +37,59 @@ class TB_DayCalendar{
         this.selectMode = _options.hasOwnProperty("selectMode") ? _options["selectMode"] : "SINGLE"; // SINGLE / DURATION
 
         
-        let bodyContainer = _options.hasOwnProperty("containerParent") ? _options["containerParent"] : "body"; // SINGLE / DURATION
+        this.bodyContainer = _options.hasOwnProperty("containerParent") ? _options["containerParent"] : "body"; // SINGLE / DURATION
+
+        this.selectDayPeriodCallback = _options.hasOwnProperty("selectDayPeriodCallback") ? _options["selectDayPeriodCallback"] : null;
+        
+
+        this.dayCalendarSelector = "#DayCalendar_" + this.uniqueId + "";
+
+
+        this.build();
+
+        TB_PushDayTimeBooker(this);
+
+    }
+
+    init(_options){
+
+        this.language = _options.hasOwnProperty("language") ? _options["language"] : 'en-US';
+        this.bookablePeriods = _options.hasOwnProperty("bookablePeriods") ? _options["bookablePeriods"] : [];
+        this.bookedPeriods = _options.hasOwnProperty("bookedPeriods") ? _options["bookedPeriods"] : [];
+        this.segmentTime = _options.hasOwnProperty("segmentTime") ? _options["segmentTime"] : 'en-US';
+        this.fullDay = _options.hasOwnProperty("fullDay") ? _options["fullDay"] : true;
+        this.minimalDuration = _options.hasOwnProperty("minimalDuration") ? _options["minimalDuration"] : 0;
+        this.selectMode = _options.hasOwnProperty("selectMode") ? _options["selectMode"] : "SINGLE"; // SINGLE / DURATION
+
+        
+        this.bodyContainer = _options.hasOwnProperty("containerParent") ? _options["containerParent"] : "body"; // SINGLE / DURATION
+
+        this.selectDayPeriodCallback = _options.hasOwnProperty("selectDayPeriodCallback") ? _options["selectDayPeriodCallback"] : null;
+        
+        
+
+    }
+
+    build(){
+
+        let removeCalendarSelector = $("#DayCalendar_" + this.uniqueId);
+        if( removeCalendarSelector ){
+            removeCalendarSelector.remove();
+        }
+
         let dayCalendarContainerNode = "<div id='jdtb_daycalendar_container_"+this.uniqueId+"'></div>";
-        $(bodyContainer).append(dayCalendarContainerNode);
+        $(this.bodyContainer).append(dayCalendarContainerNode);
         let dayCalendarContainerSelector = $("#jdtb_daycalendar_container_" + this.uniqueId);
         dayCalendarContainerSelector.append("<h2></h2>");
 
         this.tableNode = "<table id='DayCalendar_" + this.uniqueId + "' class='DayCalendar'></table>";
         dayCalendarContainerSelector.append(this.tableNode);
 
-        this.dayCalendarSelector = "#DayCalendar_" + this.uniqueId + "";
 
 
         let appendHeadDayCalendar = "<tr>";
         //  -   /   matin / apres-midi
         appendHeadDayCalendar+= "<th> </th>";
-
-     
 
         for(let i=0; i< 60;i+=this.segmentTime){
             appendHeadDayCalendar+= "<th>"+i+"</th>";
@@ -158,8 +194,6 @@ class TB_DayCalendar{
             $(this.dayCalendarSelector).append(newLine);
 
         }
-
-        TB_PushDayTimeBooker(this);
 
     }
 
@@ -367,6 +401,7 @@ class TB_DayCalendar{
 
             }else{
 
+
                 this.disableNonSelectableTimeSegments();
 
                 // CHECK  IF HOUR AND MINUTE IS IN PERIOD SELECTED
@@ -413,6 +448,13 @@ class TB_DayCalendar{
                     alert("Booking end must be after booking start");
                     return;
                 }
+
+
+                if (this.selectDayPeriodCallback) {
+                    setTimeout(this.selectDayPeriodCallback(this, this.bookingStartHour, this.bookingStartMinute, this.bookingEndHour, this.bookingEndMinute), 1); // 1 ms later
+                }
+
+
 
                 this.highlightPeriodSelected();
             }

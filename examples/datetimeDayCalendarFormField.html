@@ -98,7 +98,66 @@
             TB_AppendTimeMarker(calendar.uniqueId);
             formField.selectDayPeriod();
 
+
+            let dayCalendarNewOptions = {
+            language: "fr-FR",
+            bookablePeriods: [
+            "6:10 9:30","10:30 12:00"
+            ],
+            bookedPeriods: [
+            "6:35 7:55","10:40 10:55"
+            ],
+            segmentTime: 2,
+            fullDay: true,
+            minimalDuration: 10,
+            selectMode:"DURATION",
+            selectDayPeriodCallback: selectDayPeriodCallbackFunction 
+        };
+
+        
+            formField.dayCalendar.init(dayCalendarNewOptions);
+            formField.dayCalendar.build();
+
+            formField.incrementSelectState();
+
         }
+
+
+        function selectDayPeriodCallbackFunction(dayCalendar,shour,sminute,ehour,eminute){
+
+            
+            //alert();
+
+            let currentYear = formField.calendar.dateMarkers[0].dateA.getFullYear();
+            let currentMonth = formField.calendar.dateMarkers[0].dateA.getMonth();
+            let currentDay = formField.calendar.dateMarkers[0].dateA.getDate();
+
+           
+            let dayPeriodStartDate = new Date(currentYear,currentMonth,currentDay,shour,sminute);
+            let dayPeriodEndDate = new Date(currentYear,currentMonth,currentDay,ehour,eminute);
+
+            console.log(dayPeriodStartDate.getTime());
+            console.log(dayPeriodEndDate.getTime());
+
+            //alert(dayPeriodStartDate);
+
+            formField.updateFormFieldVal(dayPeriodStartDate.getTime()+"->"+dayPeriodEndDate.getTime());
+            formField.hidePanels();
+
+            formField.incrementSelectState();
+
+        }
+
+
+        function removeTimeMarkerCallbackFunction(calendar,currentYear,currentMonth,currentDay){
+
+            
+            // on ferme le day calendar
+            formField.hideDayCalendarPanel();
+
+
+        }
+
 
         let frenchCalendarOptions = {
             language: "fr-FR",
@@ -109,7 +168,8 @@
             minimalDuration: 3,
             maximalDuration: 93,
             changeMonthCallback: changeMonthCallbackFunction,
-            selectDateCallback: selectDateCallbackFunction
+            selectDateCallback: selectDateCallbackFunction,
+            removeTimeMarkerCallback: removeTimeMarkerCallbackFunction
                    
         };
 

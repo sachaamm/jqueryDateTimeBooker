@@ -95,8 +95,6 @@ class TB_Calendar {
         this.calendarRightSectionFooterClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["calendarRightSectionFooterClass"]) ? _options["styleClassArray"]["calendarRightSectionFooterClass"] : 'jdtb_calendar_monthTitle_footerMargin';
         
 
-
-
         // MINIMAL AND MAXIMAL DURATION CONSTRAINS
         this.minimalPeriodDuration = _options.hasOwnProperty("minimalDuration") ? _options["minimalDuration"] : null;
         this.maximalPeriodDuration = _options.hasOwnProperty("maximalDuration") ? _options["maximalDuration"] : null;
@@ -111,6 +109,7 @@ class TB_Calendar {
         // CALLBACK
         this.changeMonthCallback = _options.hasOwnProperty("changeMonthCallback") ? _options["changeMonthCallback"] : null;
         this.selectDateCallback = _options.hasOwnProperty("selectDateCallback") ? _options["selectDateCallback"] : null;
+        this.removeTimeMarkerCallback = _options.hasOwnProperty("removeTimeMarkerCallback") ? _options["removeTimeMarkerCallback"] : null;
      
         this.periodBookableReachEndOfMonth = false;
         this.periodBookableContinuityEnd = -1;
@@ -324,6 +323,9 @@ class TB_Calendar {
         if (this.selectMode === 'SINGLE') { // ADD A SINGLE DAY DATE / DATE TIME
             let hour = $("#calendarDiv_TimeDiv_hour").val();
             let minute = $("#calendarDiv_TimeDiv_minute").val();
+
+            alert('rr');
+
             this.appendDateDiv(new Date(this.currentYear, this.currentMonth, this.currentSelectedCellId, hour, minute));
         }
 
@@ -331,6 +333,9 @@ class TB_Calendar {
 
     // DATE DIV :  a div indicating a booked date. ( SINGLE )
     appendDateDiv(date) {
+
+        alert("append date div function is useless !");
+
         let calendarDivSelector = $("#calendarDiv_" + this.uniqueId);
         let dateDiv = new TB_TimeMarker(date);
         this.dateMarkers.push(dateDiv);
@@ -339,7 +344,11 @@ class TB_Calendar {
         calendarDivSelector.append("<div id='calendarDateDiv_" + dateDiv.uniqueId + "' class=''><p onclick='TB_DurationDiv_SelectDurationDiv(" + this.uniqueId + "," + dateDiv.uniqueId + ")' class='jtdb_calendarDurationDiv'>" + toLocaleDate + " </p>" + removeDateButton + "</div>");
     }
 
+
     removeDateDiv(dateDivId) {
+
+        alert("remove date div function is useless !");
+
         for (let i = 0; i < this.dateMarkers.length; i++) {
             if (parseInt(this.dateMarkers[i].uniqueId) === parseInt(dateDivId)) {
                 this.dateMarkers.slice(i);
@@ -350,10 +359,13 @@ class TB_Calendar {
 
     appendTimeMarker() {
 
+        //alert("efeezfze");
+
         $("#jdtb_calendar_right_header_startDateText_" + this.uniqueId).text("");
         $("#jdtb_calendar_right_header_endDateText_" + this.uniqueId).text("");
 
         if (this.selectMode === 'DURATION' && this.selectState % 2 === 1) return;
+
         
         let previousDate = new Date(this.currentSelectedYear, this.currentSelectedMonth, this.currentSelectedCellId);
         let currentDate = new Date(this.currentYear, this.currentMonth, this.currentSelectedCellEndId);
@@ -416,7 +428,66 @@ class TB_Calendar {
 
     }
 
+
+    emptyTimeMarkers(){
+
+        for(let i = 0; i < this.dateMarkers.length; i++){
+
+            $("#calendarCell_CURRENT_" + this.uniqueId + "_" + this.dateMarkers[i].dateA.getDate()).attr("class",this.calendarBookableCellClass);
+
+            
+
+            let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + this.dateMarkers[i].uniqueId + "");
+            newDurationDivContainerSelector.remove();
+
+            this.dateMarkers.splice(i);
+            this.highlighSubmittedDays();
+
+            
+
+        }
+
+        for (let i = 0; i < this.durationMarkers.length; i++) {
+
+            let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + this.durationMarkers[i].uniqueId + "");
+            newDurationDivContainerSelector.remove();
+
+            if(this.selectableDaysInMonth){
+
+                for(let j = 1; j <= TB_TimeAttributes.daysInMonth(this.currentMonth + 1 , this.currentYear) ; j++){
+                    if(this.selectableDaysInMonth.includes(j)){
+                        $("#calendarCell_CURRENT_" + this.uniqueId + "_" + j).attr("class",this.calendarBookableCellClass);
+                    }
+                }    
+
+            }else{
+
+                for(let j = 1; j <= TB_TimeAttributes.daysInMonth(this.currentMonth + 1 , this.currentYear) ; j++){  
+                    $("#calendarCell_CURRENT_" + this.uniqueId + "_" + j).attr("class",this.calendarBookableCellClass);
+                }
+            }
+
+            this.durationMarkers.splice(i);
+            this.highlighSubmittedDays();
+                
+            
+           
+        }
+
+
+    }
+
+
     removeTimeMarker(timeMarkerId) {
+
+
+        
+        if (this.removeTimeMarkerCallback) {
+            setTimeout(this.removeTimeMarkerCallback(this, this.currentYear, this.currentMonth, this.currentSelectedCellId), 1); // 1 ms later
+        }
+        
+
+
 
         for(let i = 0; i < this.dateMarkers.length; i++){
 
@@ -915,9 +986,11 @@ class TB_Calendar {
             return;
         }
 
+        /*
         if (this.selectDateCallback) {
             setTimeout(this.selectDateCallback(this, this.currentYear, this.currentMonth, this.currentSelectedCellId), 1); // 1 ms later
         }
+        */
 
         if (this.selectMode === 'SINGLE') {
 
@@ -1250,6 +1323,11 @@ class TB_Calendar {
         }
 
         this.selectState++;
+
+        if (this.selectDateCallback) {
+            setTimeout(this.selectDateCallback(this, this.currentYear, this.currentMonth, this.currentSelectedCellId), 1); // 1 ms later
+        }
+
 
     }
 
