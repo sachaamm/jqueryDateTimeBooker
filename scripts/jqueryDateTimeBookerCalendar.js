@@ -65,6 +65,10 @@ class TB_Calendar {
         this.calendarSelectedCellClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["selectedCellClass"]) ? _options["styleClassArray"]["selectedCellClass"] : 'jdtb_selectedCell';
         this.calendarSubmittedCellClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["submittedCellClass"]) ? _options["styleClassArray"]["submittedCellClass"] : 'jdtb_submittedCell';
         
+        this.calendarContainerClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["calendarContainerClass"]) ? _options["styleClassArray"]["calendarContainerClass"] : 'jdtb_calendar_container_div';
+     
+
+
         this.calendarMonthTitleContainerClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["calendarMonthTitleContainerClass"]) ? _options["styleClassArray"]["calendarMonthTitleContainerClass"] : 'jdtb_calendar_monthTitle_container';
         this.calendarMonthTitleClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["calendarMonthTitleClass"]) ? _options["styleClassArray"]["calendarMonthTitleClass"] : 'jdtb_calendar_monthTitle';
         this.calendarMonthTitleHeaderMarginClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["calendarMonthTitleHeaderMarginClass"]) ? _options["styleClassArray"]["calendarMonthTitleHeaderMarginClass"] : 'jdtb_calendar_monthTitle_headerMargin';
@@ -109,7 +113,11 @@ class TB_Calendar {
         // CALLBACK
         this.changeMonthCallback = _options.hasOwnProperty("changeMonthCallback") ? _options["changeMonthCallback"] : null;
         this.selectDateCallback = _options.hasOwnProperty("selectDateCallback") ? _options["selectDateCallback"] : null;
+        this.appendTimeMarkerCallback = _options.hasOwnProperty("appendTimeMarkerCallback") ? _options["appendTimeMarkerCallback"] : null;
         this.removeTimeMarkerCallback = _options.hasOwnProperty("removeTimeMarkerCallback") ? _options["removeTimeMarkerCallback"] : null;
+
+
+
      
         this.periodBookableReachEndOfMonth = false;
         this.periodBookableContinuityEnd = -1;
@@ -171,7 +179,7 @@ class TB_Calendar {
     createCalendarDivElements(parentNode) {
 
         // CREATE MAIN CONTAINER
-        let mainContainer = "<div id='jdtb_calendar_container_div_" + this.uniqueId + "' class='jdtb_calendar_container_div'></div>";
+        let mainContainer = "<div id='jdtb_calendar_container_div_" + this.uniqueId + "' class='"+this.calendarContainerClass+"'></div>";
         parentNode.append(mainContainer);
 
         // CREATE LEFT SECTION & RIGHT SECTION
@@ -359,7 +367,10 @@ class TB_Calendar {
 
     appendTimeMarker() {
 
-        //alert("efeezfze");
+        
+        if (this.appendTimeMarkerCallback) {
+            setTimeout(this.appendTimeMarkerCallback(this, this.currentYear, this.currentMonth, this.currentSelectedCellId), 1); // 1 ms later
+        }
 
         $("#jdtb_calendar_right_header_startDateText_" + this.uniqueId).text("");
         $("#jdtb_calendar_right_header_endDateText_" + this.uniqueId).text("");
@@ -477,6 +488,23 @@ class TB_Calendar {
 
     }
 
+
+    /*
+    removeFirstDateMarker(){
+        if(this.dateMarkers.length > 1){
+            $("#calendarCell_CURRENT_" + this.uniqueId + "_" + this.dateMarkers[1].dateA.getDate()).attr("class",this.calendarBookableCellClass);
+
+                
+
+                let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + this.dateMarkers[1].uniqueId + "");
+                newDurationDivContainerSelector.remove();
+
+                this.dateMarkers.splice(0);
+                this.highlighSubmittedDays();
+
+        }
+    }
+    */
 
     removeTimeMarker(timeMarkerId) {
 
@@ -1120,7 +1148,9 @@ class TB_Calendar {
                 if (this.currentSelectedCellId > this.currentSelectedCellEndId && this.currentSelectedMonth === this.currentSelectedEndMonth && this.currentSelectedYear === this.currentSelectedEndYear) endDurationBeforeStartDuration = true;
 
                 if (endDurationBeforeStartDuration) {
-                    alert("The end of your duration is happening before the beginning of your duration");
+                    //alert("The end of your duration is happening before the beginning of your duration");
+                    alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"endDurationBeforeStartDuration"));
+
                     return;
                 }
 
@@ -1187,7 +1217,9 @@ class TB_Calendar {
 
                     if (this.minimalPeriodDuration) {
                         if (nbDaysInPeriod < this.minimalPeriodDuration) {
-                            alert("You must select a period containing at least " + this.minimalPeriodDuration + " days.");
+                            //alert("You must select a period containing at least " + this.minimalPeriodDuration + " days.");
+                            alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"durationIsTooShort", " Select at least " + this.minimalPeriodDuration + " days"));
+
                             this.currentSelectedCellEndId = null;
                             return;
                         }
@@ -1195,7 +1227,9 @@ class TB_Calendar {
 
                     if (this.maximalPeriodDuration) {
                         if (nbDaysInPeriod > this.maximalPeriodDuration) {
-                            alert("You must select a period containing less than " + (this.maximalPeriodDuration + 1) + " days.");
+                            //alert("You must select a period containing less than " + (this.maximalPeriodDuration + 1) + " days.");
+                            alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"durationIsTooLong", " Select less than " + this.maximalPeriodDuration + " days"));
+
                             this.currentSelectedCellEndId = null;
                             return;
                         }
@@ -1203,7 +1237,8 @@ class TB_Calendar {
 
                     if(!this.periodBookableReachEndOfMonth && periodOverDifferentsMonths){                        
                         if(this.currentSelectedCellEndId > this.periodBookableContinuityEnd || !this.periodBookableGetContinuity){
-                            alert("Your period is not continuous ! " );
+                            //alert("Your period is not continuous ! " );
+                            alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"nonContinuousPeriod"));
                             this.currentSelectedCellEndId = null;
                             return;    
                         }                        
@@ -1215,7 +1250,8 @@ class TB_Calendar {
                         for (let i = _startId; i <= parseInt(this.currentSelectedCellEndId); i++) {           
                         
                             if(!this.selectableDaysInMonth.includes(i)){
-                                alert("Your period is not continuous . ");
+                                //alert("Your period is not continuous . ");
+                                alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"nonContinuousPeriod"));
                                 this.currentSelectedCellEndId = null;
                                 return;
                             }
@@ -1297,14 +1333,21 @@ class TB_Calendar {
 
                     if (this.minimalPeriodDuration) {
                         if (nbDaysInPeriod < this.minimalPeriodDuration) {
-                            alert("You must select a period containing at least " + this.minimalPeriodDuration + " days.");
+                            //alert("You must select a period containing at least " + this.minimalPeriodDuration + " days.");
+                            alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"durationIsTooShort", " Select at least " + this.minimalPeriodDuration + " days")); // ADDED
+
+                            this.currentSelectedCellEndId = null;
+
                             return;
                         }
                     }
 
                     if (this.maximalPeriodDuration) {
                         if (nbDaysInPeriod > this.maximalPeriodDuration) {
-                            alert("You must select a period containing less than " + this.maximalPeriodDuration + " days.");
+                            alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"durationIsTooLong", " Select less than " + this.maximalPeriodDuration + " days")); // ADDED
+
+                            this.currentSelectedCellEndId = null;
+
                             return;
                         }
                     }

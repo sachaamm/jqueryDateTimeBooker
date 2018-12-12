@@ -34,6 +34,7 @@ class TB_DayCalendar{
         this.segmentTime = _options.hasOwnProperty("segmentTime") ? _options["segmentTime"] : 'en-US';
         this.fullDay = _options.hasOwnProperty("fullDay") ? _options["fullDay"] : true;
         this.minimalDuration = _options.hasOwnProperty("minimalDuration") ? _options["minimalDuration"] : 0;
+        this.maximalDuration = _options.hasOwnProperty("maximalDuration") ? _options["maximalDuration"] : 999999;
         this.selectMode = _options.hasOwnProperty("selectMode") ? _options["selectMode"] : "SINGLE"; // SINGLE / DURATION
 
         
@@ -41,6 +42,11 @@ class TB_DayCalendar{
 
         this.selectDayPeriodCallback = _options.hasOwnProperty("selectDayPeriodCallback") ? _options["selectDayPeriodCallback"] : null;
         
+
+        this.dayCalendarContainerClass = (_options.hasOwnProperty("styleClassArray") && _options["styleClassArray"]["dayCalendarContainerClass"]) ? _options["styleClassArray"]["dayCalendarContainerClass"] : '';
+     
+
+
 
         this.dayCalendarSelector = "#DayCalendar_" + this.uniqueId + "";
 
@@ -77,7 +83,7 @@ class TB_DayCalendar{
             removeCalendarSelector.remove();
         }
 
-        let dayCalendarContainerNode = "<div id='jdtb_daycalendar_container_"+this.uniqueId+"'></div>";
+        let dayCalendarContainerNode = "<div id='jdtb_daycalendar_container_"+this.uniqueId+"' class='" + this.dayCalendarContainerClass + "' ></div>";
         $(this.bodyContainer).append(dayCalendarContainerNode);
         let dayCalendarContainerSelector = $("#jdtb_daycalendar_container_" + this.uniqueId);
         dayCalendarContainerSelector.append("<h2></h2>");
@@ -408,7 +414,10 @@ class TB_DayCalendar{
                 let endAvailabilityIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,hour,minute,hour,minute);
 
                 if(endAvailabilityIndex !== this.availabilityIndex){
-                    alert("You must select booking end in same period");
+                    //alert("You must select booking end in same period");
+                    alert(TB_TimeAttributes.getDayCalendarErrorMessage(this.language,"mustBookInSamePeriod"));
+
+                          
                     return;
                 }
 
@@ -425,12 +434,30 @@ class TB_DayCalendar{
                 //alert("total delta minute " + totalDeltaMinute + " minimal duration " + this.minimalDuration);
 
                 if(totalDeltaMinute + this.segmentTime < this.minimalDuration){
-                    alert("Your booking duration must be greater or equal than " + this.minimalDuration + " minutes ");
+                    //alert("Your booking duration must be greater or equal than " + this.minimalDuration + " minutes ");
+                    alert(TB_TimeAttributes.getDayCalendarErrorMessage(this.language,"mustBookLongerThan"));
+
+
+                    //alert("Your booking duration must be greater or equal than " + this.minimalDuration + " minutes ");
                     return;
                 }
 
+                if(totalDeltaMinute + this.segmentTime > this.maximalDuration){
+                    //alert("Your booking duration must be greater or equal than " + this.minimalDuration + " minutes ");
+                    alert(TB_TimeAttributes.getDayCalendarErrorMessage(this.language,"mustBookLessThan"));
+
+
+                    //alert("Your booking duration must be greater or equal than " + this.minimalDuration + " minutes ");
+                    return;
+                }
+
+
+
                 if(!TB_DayCalendar.availableBooking(this.bookedPeriods,this.segmentTime,this.bookingStartHour,this.bookingStartMinute,this.bookingEndHour,this.bookingEndMinute)){
-                    alert("This booking is conflicting with another one");
+                    //alert("This booking is conflicting with another one");
+                    //alert("This booking is conflicting with another one");
+                    alert(TB_TimeAttributes.getDayCalendarErrorMessage(this.language,"bookConflicts"));
+                    //alert("This booking is conflicting with another one");
                     return;
                 }
 
@@ -445,7 +472,8 @@ class TB_DayCalendar{
                 }
 
                 if(!bookingEndAfterStart){
-                    alert("Booking end must be after booking start");
+                    alert(TB_TimeAttributes.getCalendarErrorMessage(this.language,"endDurationBeforeStartDuration"));
+                    //alert("Booking end must be after booking start");
                     return;
                 }
 

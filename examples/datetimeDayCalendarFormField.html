@@ -59,6 +59,9 @@
 
         let dayCalendarOptions = {
             language: "fr-FR",
+            styleClassArray: {
+                dayCalendarContainerClass: 'customDayCalendarContainer'
+            },
             bookablePeriods: [
             "6:10 9:30","10:30 12:00","14:00 16:30"
             ],
@@ -92,9 +95,27 @@
 
         }
 
+
+        function appendTimeMarkerCallbackFunction(calendar,currentYear,currentMonth,currentDay){
+
+            if(calendar.dateMarkers.length > 0){
+            
+                $("#calendarCell_CURRENT_" + calendar.uniqueId + "_" + calendar.dateMarkers[0].dateA.getDate()).attr("class",calendar.calendarBookableCellClass);
+
+                let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + calendar.dateMarkers[0].uniqueId + "");
+                newDurationDivContainerSelector.remove();
+
+                calendar.dateMarkers.splice(0);
+                calendar.highlighSubmittedDays();
+
+
+            }
+
+        }
+
         function selectDateCallbackFunction(calendar,currentYear,currentMonth,currentDay){
 
-            //alert("eee");
+            //alert("selectDate Callback");
             TB_AppendTimeMarker(calendar.uniqueId);
             formField.selectDayPeriod();
 
@@ -114,9 +135,13 @@
             selectDayPeriodCallback: selectDayPeriodCallbackFunction 
         };
 
+
+            //formField.calendar.removeFirstDateMarker();
         
             formField.dayCalendar.init(dayCalendarNewOptions);
             formField.dayCalendar.build();
+
+
 
             formField.incrementSelectState();
 
@@ -141,6 +166,14 @@
 
             //alert(dayPeriodStartDate);
 
+            if(confirm("Le créneau de réservation se déroulera de "+shour+":"+sminute+" à "+ehour+ ":"+eminute+" le "+currentDay+"/"+(currentMonth+1)+"/"+currentYear+". Vous confirmez ? ")){
+
+
+            }else{
+                return;
+            }
+
+
             formField.updateFormFieldVal(dayPeriodStartDate.getTime()+"->"+dayPeriodEndDate.getTime());
             formField.hidePanels();
 
@@ -163,12 +196,16 @@
             language: "fr-FR",
             parentNode: "body", 
             selectMode: "SINGLE",
+            styleClassArray: {
+                calendarContainerClass: 'customCalendarContainer'
+            },
             bookableDays: getCurrentBookable(new Date().getFullYear(),new Date().getMonth()),
             dateTimeEnabled: false,
             minimalDuration: 3,
             maximalDuration: 93,
             changeMonthCallback: changeMonthCallbackFunction,
             selectDateCallback: selectDateCallbackFunction,
+            appendTimeMarkerCallback: appendTimeMarkerCallbackFunction,
             removeTimeMarkerCallback: removeTimeMarkerCallbackFunction
                    
         };

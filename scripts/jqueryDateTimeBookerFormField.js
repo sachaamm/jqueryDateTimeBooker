@@ -30,6 +30,10 @@ class TB_FormField {
 
         TB_AppendFormField(this);
 
+        let backgroundPanelDiv = "<div id='tb_formfield_background_" + this.uniqueId + "' class='tb_formFieldBackground' ></div>";
+        $("body").append(backgroundPanelDiv);
+        $("#tb_formfield_background_" + this.uniqueId).css("display","none");
+
     }
 
     selectDayPeriod(){
@@ -52,9 +56,21 @@ class TB_FormField {
 
     incrementSelectState(){
         
+
         this.selectState++;
 
-        //alert("increment select state. selectState % 3 :  " + this.selectState % 3);
+        if(this.selectState % 3 == 0){
+
+            $("#tb_formfield_background_" + this.uniqueId).css("display","none");
+
+        }else{
+
+            $("#tb_formfield_background_" + this.uniqueId).css("display","block");
+
+
+        }
+
+        
     }
 
     

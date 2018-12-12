@@ -13,7 +13,21 @@ class TB_TimeAttributes{
                 singleDayLabel: "Day selected : ",
                 startDurationLabel: "Period beginning : ",
                 endDurationLabel: "Period ending : ",
-                hoursLabels: "00(AM)_01(AM)_02(AM)_03(AM)_04(AM)_05(AM)_06(AM)_07(AM)_08(AM)_09(AM)_10(AM)_11(AM)_12_13(PM)_14(PM)_15(PM)_16(PM)_17(PM)_18(PM)_19(PM)_20(PM)_21(PM)_22(PM)_23(PM)"
+                hoursLabels: "00(AM)_01(AM)_02(AM)_03(AM)_04(AM)_05(AM)_06(AM)_07(AM)_08(AM)_09(AM)_10(AM)_11(AM)_12_13(PM)_14(PM)_15(PM)_16(PM)_17(PM)_18(PM)_19(PM)_20(PM)_21(PM)_22(PM)_23(PM)",
+                calendarErrorMessages:{
+                    endDurationBeforeStartDuration: "The end of your duration is happening before the beginning of your duration",
+                    durationIsTooShort: "This duration is shorter than your calendar.minimalDuration value provided. ",
+                    durationIsTooLong: "This duration is longer than maximalDuration value provided. ",
+                    nonContinuousPeriod: "Your period is not continuous."
+
+                },
+                dayCalendarErrorMessages:{
+                    mustBookInSamePeriod: "You must select your booking end in the same period than its beginning",
+                    mustBookLongerThan: "Your booking duration is shorter than your daycalendar.minimalDuration value provided.",
+                    mustBookLessThan: "Your booking duration is longer than your daycalendar.maximalDuration value provided.",
+                    bookConflicts: "This booking is conflicting with another one"
+                    
+                }
 
             },
 
@@ -26,7 +40,22 @@ class TB_TimeAttributes{
                 singleDayLabel: "Jour selectionné : ",
                 startDurationLabel: "Début de la période : ",
                 endDurationLabel: "Fin de la période : ",
-                hoursLabels: "00h_01h_02h_03h_04h_05h_06h_07h_08h_09h_10h_11h_12h_13h_14h_15h_16h_17h_18h_19h_20h_21h_22h_23h"
+                hoursLabels: "00h_01h_02h_03h_04h_05h_06h_07h_08h_09h_10h_11h_12h_13h_14h_15h_16h_17h_18h_19h_20h_21h_22h_23h",
+                calendarErrorMessages:{
+                    endDurationBeforeStartDuration: "La fin de votre durée se situe avant le début de votre durée.",
+                    durationIsTooShort: "La durée de cette période est inférieure à la valeur calendar.minimalDuration que vous avez fournie. ",
+                    durationIsTooLong: "La durée de cette période est supérieure à la valeur calendar.maximalDuration que vous avez fournie. ",
+                    nonContinuousPeriod: "Votre période n'est pas continue."
+
+                },
+                dayCalendarErrorMessages:{
+                    mustBookInSamePeriod: "Le début de votre réservation doit se situer sur la même plage que celle de la fin de votre réservation",
+                    mustBookLongerThan: "La durée de votre réservation est inférieure à la valeur dayCalendar.minimalDuration que vous avez fournie.",
+                    mustBookLessThan: "La durée de votre réservation est supérieure à la valeur dayCalendar.maximalDuration que vous avez fournie.",
+                    bookConflicts: "Cette réservation rentre en conflit avec une autre."
+                    
+                }
+
             }
 
         }
@@ -152,10 +181,32 @@ class TB_TimeAttributes{
 
     }
 
+    // ERRORS
+    static getCalendarErrorMessage(language, errorType){
+        if(!this.checkLanguageExists(language))return false;
+
+        let arg = "";
+        if(errorArgument) arg += errorArgument;
+        //if(this.timeAttributes()[language]["calendarErrorMessages"][errorType]){
+            return this.timeAttributes()[language]["calendarErrorMessages"][errorType] ;
+        //}
+    }
+
+    static getDayCalendarErrorMessage(language, errorType){
+        if(!this.checkLanguageExists(language))return false;
+
+
+        //if(this.timeAttributes()[language]["calendarErrorMessages"][errorType]){
+            return this.timeAttributes()[language]["dayCalendarErrorMessages"][errorType] ;
+        //}
+    }
+
 
     static daysInMonth (month, year) {
         return new Date(year, month, 0).getDate();
     }
+
+
 
 
 
