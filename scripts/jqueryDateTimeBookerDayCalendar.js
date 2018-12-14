@@ -388,6 +388,8 @@ class TB_DayCalendar{
 
         if(this.selectMode === 'DURATION'){
 
+
+
             if(this.selectStep % 2 === 0){
 
                 this.unselectPreviousPeriod();
@@ -401,6 +403,8 @@ class TB_DayCalendar{
                 //console.log(this.bookablePeriods);
 
                 this.availabilityIndex = TB_DayCalendar.returnAvailabilityPeriodIndex(this.bookablePeriods,hour,minute,hour,minute);
+
+                
 
                 //alert("availability index " + this.availabilityIndex);
                 // NOW THAT WE KNOW OUR BEGINNING , WE MUST CONSIDER DISABLED NON SELECTABLE ( EX : TIME SEGMENTS AFTER A BOOKED DURATION )
@@ -516,6 +520,17 @@ class TB_DayCalendar{
         $("#DayCalendar_" + this.uniqueId + " .DayCalendar_availableTimeSegmentNonSelectable").off();
     }
 
+
+
+    resetBooking(){
+        this.bookingStartHour = null;
+        this.bookingStartMinute = null;
+        this.bookingEndHour = null;
+        this.bookingEndMinute = null;
+
+        this.selectStep = 1; // before increment selectStep
+
+    }
 
 }
 

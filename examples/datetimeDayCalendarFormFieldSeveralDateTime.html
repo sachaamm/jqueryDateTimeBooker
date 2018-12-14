@@ -49,7 +49,7 @@
 
     </div>
 
-    <input id="tb_calendar_input" type="text" readonly />
+    <input id="tb_calendar_input" type="text" readonly style="width:60%;" />
 
 
 
@@ -58,6 +58,7 @@
 
 
         $(document).ready(function () {
+
 
             let dayCalendarOptions = {
                 language: "fr-FR",
@@ -99,16 +100,23 @@
 
             function appendTimeMarkerCallbackFunction(calendar, currentYear, currentMonth, currentDay) {
 
+                calendar.selectState = 1;
+                //alert("selectDate Callback " + calendar.selectState);
 
-                if (calendar.dateMarkers.length > 0) {
+
+                if (calendar.dateMarkers.length > formField.indexForSeveral) {
+                //if (calendar.dateMarkers.length > 0) {
 
                     $("#calendarCell_CURRENT_" + calendar.uniqueId + "_" + calendar.dateMarkers[0].dateA.getDate()).attr("class", calendar.calendarBookableCellClass);
 
-                    let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + calendar.dateMarkers[0].uniqueId + "");
+                    let newDurationDivContainerSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + calendar.dateMarkers[formField.indexForSeveral].uniqueId + "");
                     newDurationDivContainerSelector.remove();
 
-                    calendar.dateMarkers.splice(0);
+                    calendar.dateMarkers.splice(formField.indexForSeveral,1);
+                    //calendar.dateMarkers.splice(0,1);
                     calendar.highlighSubmittedDays();
+
+                    
 
                     formField.selectState--;
 
@@ -118,36 +126,68 @@
 
             function selectDateCallbackFunction(calendar, currentYear, currentMonth, currentDay) {
 
-                alert("selectDate Callback");
-                
+                //alert("selectDate Callback " + calendar.selectState);
+
+                let dateMarkers =  calendar.dateMarkers;
+
+                let currentDayAlreadyBooked = [];
+
+                for(let i = 0 ; i < dateMarkers.length ; i++){
+
+                    let dateA = dateMarkers[i].dateA;
+                    let dateB = dateMarkers[i].dateB;
+                    let dcurrentYear = dateA.getFullYear();
+                    let dcurrentMonth = dateA.getMonth();
+                    let dcurrentDay = dateA.getDate();
+
+                    if(currentYear == dcurrentYear && currentMonth == dcurrentMonth && currentDay == dcurrentDay){
+                        //alert("eefdvee");
+                        let b = dateA.getHours() + ":" + dateA.getMinutes() + " " + dateB.getHours() + ":" + dateB.getMinutes();
+                        //alert(dateA.getHours() + " " + );
+                        //alert(b);
+                        currentDayAlreadyBooked.push(b);
+
+                    }
+                }
+
+
                 TB_AppendTimeMarker(calendar.uniqueId);
+
+ 
                 formField.selectDayPeriod();
 
+                currentDayAlreadyBooked.push("6:35 7:55");
+                currentDayAlreadyBooked.push("10:40 10:55");
+               
+
+                
+
+                
                 let dayCalendarNewOptions = {
                     language: "fr-FR",
                     bookablePeriods: [
                         "6:10 9:30", "10:30 12:00"
                     ],
-                    bookedPeriods: [
-                        "6:35 7:55", "10:40 10:55"
-                    ],
+                    bookedPeriods: currentDayAlreadyBooked,
                     segmentTime: 2,
                     fullDay: true,
                     minimalDuration: 10,
                     selectMode: "DURATION",
                     selectDayPeriodCallback: selectDayPeriodCallbackFunction
                 };
-
-                //formField.calendar.removeFirstDateMarker();
+   
 
                 formField.dayCalendar.init(dayCalendarNewOptions);
                 formField.dayCalendar.build();
                 formField.incrementSelectState();
+                
 
             }
 
 
             function selectDayPeriodCallbackFunction(dayCalendar, shour, sminute, ehour, eminute) {
+
+
 
                 let currentYear = formField.calendar.dateMarkers[0].dateA.getFullYear();
                 let currentMonth = formField.calendar.dateMarkers[0].dateA.getMonth();
@@ -163,19 +203,37 @@
 
                 if (confirm("Le créneau de réservation se déroulera de " + shour + ":" + sminute + " à " + ehour + ":" + eminute + " le " + currentDay + "/" + (currentMonth + 1) + "/" + currentYear + ". Vous confirmez ? ")) {
 
-                } else {
-                    //formField.dayCalendar.build();
 
-                    //formField.dayCalendar.selectStep = 0;
+                    formField.indexForSeveral++;
+
+                } else {
+          
                     formField.dayCalendar.unselectPreviousPeriod();
                     formField.dayCalendar.resetBooking();
-
-                    //alert(formField.dayCalendar.selectStep);
 
                     return;
                 }
 
-                formField.updateFormFieldVal(dayPeriodStartDate.getTime() + "->" + dayPeriodEndDate.getTime());
+
+                let lastDateMarker = formField.calendar.dateMarkers[formField.indexForSeveral-1];
+                let lastDateDivSpanSelector = $("#jdtb_calendar_rightSection_timeMarker_container_" + lastDateMarker.uniqueId + ">div>span");
+                let ldsText = lastDateDivSpanSelector.text();
+
+                ldsText += " de " + shour + ":" + sminute + " à " + ehour + ":" + eminute; 
+                //alert(ldsText);
+                lastDateDivSpanSelector.text(ldsText);
+
+                let dYear = lastDateMarker.dateA.getFullYear();
+                let dMonth = lastDateMarker.dateA.getMonth();
+                let dDate = lastDateMarker.dateA.getDate();
+
+                lastDateMarker.dateA  =  new Date(dYear,dMonth,dDate,shour,sminute);
+                lastDateMarker.dateB  =  new Date(dYear,dMonth,dDate,ehour,eminute);
+                // on sauve dateA et dateB dans le date marker , pour le réutiliser quand on charge les disponibilité d'un jour selectionne
+
+                let getFormField = formField.getFormFieldVal();
+               
+                formField.updateFormFieldVal(getFormField + dayPeriodStartDate.getTime() + "->" + dayPeriodEndDate.getTime() + "_");
                 formField.hidePanels();
 
                 formField.incrementSelectState();
@@ -183,9 +241,25 @@
             }
 
 
-            function removeTimeMarkerCallbackFunction(calendar, currentYear, currentMonth, currentDay) {
+            function removeTimeMarkerCallbackFunction(calendar, currentYear, currentMonth, currentDay,indexToSplice) {
                 // on ferme le day calendar
-                formField.hideDayCalendarPanel();
+                if(calendar.dateMarkers.length == 0)formField.hideDayCalendarPanel();
+
+                let fv = formField.getFormFieldVal();
+   
+                let t = "";
+                let splitFv = fv.split("_");
+
+                let n = "";
+  
+                for(let i = 0 ; i < splitFv.length-1 ; i++){
+                    if(i!= indexToSplice) n += splitFv[i] + "_";
+                }
+
+                formField.updateFormFieldVal(n);
+
+                formField.indexForSeveral--;
+
             }
 
 
@@ -203,18 +277,20 @@
                 changeMonthCallback: changeMonthCallbackFunction,
                 selectDateCallback: selectDateCallbackFunction,
                 appendTimeMarkerCallback: appendTimeMarkerCallbackFunction,
-                removeTimeMarkerCallback: removeTimeMarkerCallbackFunction
+                removeTimeMarkerCallback: removeTimeMarkerCallbackFunction,
+                repickSameDate: true
 
             };
 
             //let frCalendar = new TB_Calendar(frenchCalendarOptions);
-            
+
 
             let formFieldOptions = {
                 inputId: '#tb_calendar_input',
                 calendar: new TB_Calendar(frenchCalendarOptions),
                 dayCalendar: new TB_DayCalendar(dayCalendarOptions),
-                selectMode: 'SINGLE_DATETIME_BOOKING'             
+                selectMode: 'SEVERAL_DATETIME_BOOKING'
+
             }
 
             let formField = new TB_FormField(formFieldOptions);

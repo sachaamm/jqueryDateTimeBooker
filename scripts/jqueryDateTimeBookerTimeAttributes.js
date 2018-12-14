@@ -186,7 +186,7 @@ class TB_TimeAttributes{
         if(!this.checkLanguageExists(language))return false;
 
         let arg = "";
-        if(errorArgument) arg += errorArgument;
+        
         //if(this.timeAttributes()[language]["calendarErrorMessages"][errorType]){
             return this.timeAttributes()[language]["calendarErrorMessages"][errorType] ;
         //}

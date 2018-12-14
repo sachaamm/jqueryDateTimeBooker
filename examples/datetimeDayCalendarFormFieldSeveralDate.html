@@ -49,7 +49,7 @@
 
     </div>
 
-    <input id="tb_calendar_input" type="text" readonly />
+    <input id="tb_calendar_input" type="text" readonly style="width:60%;" />
 
 
 
@@ -59,22 +59,7 @@
 
         $(document).ready(function () {
 
-            let dayCalendarOptions = {
-                language: "fr-FR",
-                styleClassArray: {
-                    dayCalendarContainerClass: 'customDayCalendarContainer'
-                },
-                bookablePeriods: [
-                    "6:10 9:30", "10:30 12:00", "14:00 16:30"
-                ],
-                bookedPeriods: [
-                    "6:35 7:55", "10:40 10:55", "15:10 15:40"
-                ],
-                segmentTime: 2,
-                fullDay: true,
-                minimalDuration: 10,
-                selectMode: "DURATION"
-            };
+
 
             //const dayCalendar = new DayCalendar(dayCalendarOptions);
             //dayCalendar.setSelectMode('DURATION');
@@ -118,31 +103,50 @@
 
             function selectDateCallbackFunction(calendar, currentYear, currentMonth, currentDay) {
 
-                alert("selectDate Callback");
-                
                 TB_AppendTimeMarker(calendar.uniqueId);
-                formField.selectDayPeriod();
 
-                let dayCalendarNewOptions = {
-                    language: "fr-FR",
-                    bookablePeriods: [
-                        "6:10 9:30", "10:30 12:00"
-                    ],
-                    bookedPeriods: [
-                        "6:35 7:55", "10:40 10:55"
-                    ],
-                    segmentTime: 2,
-                    fullDay: true,
-                    minimalDuration: 10,
-                    selectMode: "DURATION",
-                    selectDayPeriodCallback: selectDayPeriodCallbackFunction
-                };
+                if(calendar.selectState % 2 == 0){
 
-                //formField.calendar.removeFirstDateMarker();
+                    let confirmed = false;
 
-                formField.dayCalendar.init(dayCalendarNewOptions);
-                formField.dayCalendar.build();
-                formField.incrementSelectState();
+                    let cp = formField.confirmProcess;
+                    
+                    let lastDurationMarker = calendar.durationMarkers[calendar.durationMarkers.length - 1];
+  
+                    let startDuration = lastDurationMarker.dateA;
+                    let endDuration = lastDurationMarker.dateB;
+
+                    if(cp){
+
+                        if (confirm("Le créneau de réservation se déroulera de " + startDuration.getDate() + "/" + (startDuration.getMonth() + 1) + "/" + startDuration.getFullYear() + " au " + endDuration.getDate() + "/" +  (endDuration.getMonth()+1) + "/" + endDuration.getFullYear() + ". Vous confirmez ? ")) {
+                            confirmed = true;
+                        }else{
+                            //alert("eee");
+                            calendar.removeLastDurationMarker();
+                            return;
+                        }
+                    }else{
+
+                    
+                        confirmed = true;
+                    }
+
+
+                    let fv = formField.getFormFieldVal();
+
+                    let duration = startDuration.getTime() + "->" + endDuration.getTime()+"_";
+
+                    if(fv === ''){                   
+                        
+                        formField.updateFormFieldVal(duration);                        
+
+                    }else{
+                        
+                        formField.updateFormFieldVal(fv + duration);      
+
+                    }
+                }
+      
 
             }
 
@@ -175,7 +179,7 @@
                     return;
                 }
 
-                formField.updateFormFieldVal(dayPeriodStartDate.getTime() + "->" + dayPeriodEndDate.getTime());
+                formField.updateFormFieldVal(dayPeriodStartDate.getTime() + "->" + dayPeriodEndDate.getTime()+"_");
                 formField.hidePanels();
 
                 formField.incrementSelectState();
@@ -183,16 +187,28 @@
             }
 
 
-            function removeTimeMarkerCallbackFunction(calendar, currentYear, currentMonth, currentDay) {
-                // on ferme le day calendar
-                formField.hideDayCalendarPanel();
+            function removeTimeMarkerCallbackFunction(calendar, currentYear, currentMonth, currentDay,indexToSplice) {
+                
+                let fv = formField.getFormFieldVal();
+   
+                let t = "";
+                let splitFv = fv.split("_");
+
+                let n = "";
+  
+                for(let i = 0 ; i < splitFv.length-1 ; i++){
+                    if(i!= indexToSplice) n += splitFv[i] + "_";
+                }
+
+                formField.updateFormFieldVal(n);
+                
             }
 
 
             let frenchCalendarOptions = {
                 language: "fr-FR",
                 parentNode: "body",
-                selectMode: "SINGLE",
+                selectMode: "DURATION",
                 styleClassArray: {
                     calendarContainerClass: 'customCalendarContainer'
                 },
@@ -208,13 +224,15 @@
             };
 
             //let frCalendar = new TB_Calendar(frenchCalendarOptions);
-            
+
 
             let formFieldOptions = {
                 inputId: '#tb_calendar_input',
                 calendar: new TB_Calendar(frenchCalendarOptions),
-                dayCalendar: new TB_DayCalendar(dayCalendarOptions),
-                selectMode: 'SINGLE_DATETIME_BOOKING'             
+                //dayCalendar: new TB_DayCalendar(dayCalendarOptions),
+                selectMode: 'SEVERAL_DATE_BOOKING',
+                confirmProcess: true
+
             }
 
             let formField = new TB_FormField(formFieldOptions);
