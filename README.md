@@ -5,6 +5,6 @@ is **a js client library** to create **Calendar and DailySchedule booker system*
 
 Actually this repository is still **a work in progress**, the best way to understand how to use JDTB is to download this repository and run the examples, basically it's html files including js files of the library.
 </br></br>
-I will documentate this repository ASAP, including wikis to explain how to use JDTB, how to contribute to repository if wanted, and fix some minors bugs which aren't issuing the functionning of the library
+I will documentate this repository ASAP, including wikis to explain how to use JDTB, how to contribute to repository if wanted, and fix some minors bugs 
 </br></br>
 # See you soon !
