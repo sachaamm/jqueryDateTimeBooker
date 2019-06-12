@@ -1,5 +1,5 @@
 # jqueryDateTimeBooker
-a js client library to create Calendar and DayCalendar booker system to integrate in your forms. The purpose was to make something providing more options than the famous jquery datetime picker.
+is **a js client library** to create **Calendar and DailySchedule booker system** to integrate into your forms. The purpose was to make something **providing more options than the famous jquery datetime picker**.
 
 ![alt text](https://github.com/sachaamm/jqueryDateTimeBooker/blob/master/wiki/pictures/Screenshot%20from%202019-06-12%2015-05-35.png)
 
