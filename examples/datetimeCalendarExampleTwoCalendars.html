@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Example</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style/jdtbStyle.css"> <!-- DEFAULT CSS -->
+    <link rel="stylesheet" href="../style/myCustomCSS.css"><!-- ADAPT YOUR CSS THEME FOR CALENDARS -->
+
+
+    <!-- JS -->
+    <script src="../scripts/jqueryDateTimeBooker.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerHasher.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerCalendar.js"></script>
+
+    <script src="../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+</head>
+<body>
+
+<a href="../index.html">
+    <img src="../icons/home.svg" style="width:2%"/>
+</a>
+
+
+<h1>JQuery DateTimeBooker</h1>
+<h3>US Calendar and FR Calendar example</h3>
+<p>
+</p>
+
+<p class="tb_code_p">
+
+<code>
+   
+</code>
+
+</p>
+
+
+
+
+
+
+
+<div id="jdtbErrors">
+
+</div>
+
+
+<script>
+
+
+
+
+
+
+    $( document ).ready(function() {
+
+        let defaultUsCalendar = new TB_Calendar(); // DEFAULT CALENDAR 
+      
+        let _frCalendarBookableDays = [ 2,3,4,5,6,7,8,9,10,11,12,15,17,21,22 ];
+
+        function changeMonthCallbackFunction(calendar,currentYear,currentMonth){
+
+            if(currentMonth === 10 && currentYear === 2018){
+                //calendar.highlightSelectableDays(bookableDays);
+                calendar.updateBookableDays(_frCalendarBookableDays); //
+            }else{
+                calendar.updateBookableDays([1,3,7]); // Update to new bookable days array
+                // OR
+                //calendar.updateBookableDays(); // set all month days selectable
+            }
+
+        }
+
+        function selectDateCallbackFunction(calendar,currentYear,currentMonth,currentDay){
+
+            console.log("Select date event is triggering a callback. ");
+            console.log("Calendar : ");
+            console.log(calendar);
+            console.log("Calendar current year : ");
+            console.log(currentYear);
+            console.log("Calendar current month : ");
+            console.log(currentMonth);
+            console.log("Calendar current day : ");
+            console.log(currentDay);
+
+        }
+
+        let frenchCalendarOptions = {
+            // Calendar Language ( Default: en-US )
+            language: "fr-FR",
+            // Node to append the calendar into ( Default: body )
+            parentNode: "body", // or #my-custom-div , etc...
+            // the selection mode, are we selecting a single date or a period ? ( duration ) ( Default: SINGLE, pick one single date / Arguments: SINGLE _ DURATION )
+            selectMode: "DURATION",
+            // Your custom css class to override default calendar style ( Default: null, fallback css classes are defining calendar style )
+            styleClassArray: {
+                // the calendar class ( Css fallback class: .jdtb_calendar)
+                calendarClass: "calendar_fr_class",
+                // the calendar div container class ( Css fallback class: .jdtb_calendarDiv)
+                calendarDivClass: "calendar_fr_div_class",
+                // the selectable cell class ( Css fallback class: .jdtb_selectableCell)
+                selectableCellClass: "calendar_fr_SelectableCell",
+                // the selected cell class ( Css fallback class: .jdtb_selectedCell)
+                selectedCellClass: "calendar_fr_SelectedCell",
+                // the submitted cell class ( Css fallback class: .jdtb_submittedCell)
+                submittedCellClass: "calendar_fr_SubmittedCell"
+            },
+            // BOOKABLE DAYS ( Default: null, all days are by default selectable)
+            //bookableDays: _frCalendarBookableDays,
+            // DATE TIME ENABLED ( Default: false )
+            dateTimeEnabled: false,
+            // MINIMAL PERIOD DURATION ( Default: null, no minimal Duration is required)
+            minimalDuration: 3,
+            // MAXIMAL PERIOD DURATION ( Default: null, no maximal Duration is required)
+            maximalDuration: 93,
+            // CHANGE MONTH CALLBACK ( Default: null, no callback )
+            //changeMonthCallback: changeMonthCallbackFunction,
+            // SELECT DATE CALLBACK ( Default: null, no callback )
+            selectDateCallback: selectDateCallbackFunction
+        };
+
+        let frCalendar = new TB_Calendar(frenchCalendarOptions);
+
+      
+        
+
+
+    });
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

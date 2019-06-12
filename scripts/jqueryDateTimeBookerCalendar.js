@@ -18,8 +18,8 @@ class TB_Calendar {
         this.calendarType = "DAY"; // DAY / DAY_TIME
 
         // CURRENT SELECTED IS USED FOR DURATION BEGINNING / SINGLE SELECTED
-        this.currentSelectedMinute = null;
-        this.currentSelectedHpur = null;
+        this.currentSelectedMinute = null; // IS IT USEFUL ?
+        this.currentSelectedHour = null;
         this.currentSelectedCellId = null;
         this.currentSelectedCellArg = null;
         this.currentSelectedMonth = null;
@@ -560,6 +560,12 @@ class TB_Calendar {
             }
 
         }
+
+
+
+        let saveCellSelector = "#calendarCell_CURRENT_" + this.uniqueId + "_" + this.currentSelectedCellId;
+        $(saveCellSelector).attr("class", this.calendarSelectedCellClass); //JUST SAVE SELECTED START WHEN REMOVE IF NECESSARY
+
 
         if (this.removeTimeMarkerCallback) {
             setTimeout(this.removeTimeMarkerCallback(this, this.currentYear, this.currentMonth, this.currentSelectedCellId,indexToSplice), 1); // 1 ms later

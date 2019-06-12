@@ -12,7 +12,7 @@
 
     <script src="../scripts/jqueryDateTimeBooker.js"></script>
     <script src="../scripts/jqueryDateTimeBookerCalendar.js"></script>
-    <script src="../scripts/jqueryDateTimeBookerDayCalendar.js"></script>
+    <script src="../scripts/jqueryDateTimeBookerDailySchedule.js"></script>
     <script src="../scripts/jqueryDateTimeBookerTimeAttributes.js"></script>
     <script src="../scripts/jqueryDateTimeBookerHasher.js"></script>
 
@@ -33,7 +33,7 @@
 
 <h1>JQuery DateTimeBooker</h1>
 <h3>DateCalendar to Daycalendar callback example</h3>
-
+<p>This example is just displaying a daycalendar when a date is selected on the calendar</p>
 
 
 <div id="CalendarDiv">
@@ -42,7 +42,6 @@
 
 
     <table id="DayCalendar">
-
 
 
     </table>
@@ -77,14 +76,10 @@
 
         let dureeMinimale = 20;
 
-        const dayCalendar = new DayCalendar(calendarLanguage,dayAvailabilitiesPeriods,dayBookingPeriods,divideTime,true,dureeMinimale);
+        const dailySchedule = new TB_DailySchedule(calendarLanguage,dayAvailabilitiesPeriods,dayBookingPeriods,divideTime,true,dureeMinimale);
 
-        //dayCalendar.setDayCalendarVisibility()
-        dayCalendar.setVisibility('none');
-        dayCalendar.setSelectMode('DURATION');
-
-
-
+        dailySchedule.setVisibility('none');
+        dailySchedule.setSelectMode('DURATION');
 
 
         let bookableDays = [ 2,5,12,15,17,21,22 ];
@@ -93,7 +88,6 @@
         //const usCalendar = new TB_Calendar(calendarLanguage,bodySelector,"calendar_us_class","calendar_us_div_class",bookableDays);
         const usCalendar = new TB_Calendar(calendarLanguage,bodySelector,null,null,bookableDays);
 
-        //usCalendar.setSelectMode("DURATION");
         usCalendar.setChangeMonthCallback(changeMonthCallback);
         usCalendar.setSelectDateCallback(setDateCallback);
         usCalendar.highlightSelectableDays(bookableDays);
@@ -106,13 +100,19 @@
                 calendar.updateBookableDays([1,3,7]); // Update to new bookable days array
             }
 
+
         }
 
+        // WHEN A DATE IS SELECTED
         function setDateCallback(calendar,currentYear,currentMonth,currentDay){
+            
+            dailySchedule.setVisibility('block'); // we set Visible our dailySchedule
 
-            //alert("set date callback " + currentYear + " " + currentMonth + " " + currentDay );
-
-            dayCalendar.setVisibility('block');
+            for(let i = 0 ; i < dayBookingPeriods.length ; i++){
+                dailySchedule.bookablePeriods.push(dayBookingPeriods[i]); // we push a bookable period
+            }
+            
+            dailySchedule.build(); // we have to call build() method to update the daily schedule with our new bookable periods.
         }
 
 
