@@ -7,4 +7,4 @@ Actually this repository is still **a work in progress**, the best way to unders
 </br></br>
 I will documentate this repository ASAP, including wikis to explain how to use JDTB, how to contribute to repository if wanted, and fix some minors bugs 
 </br></br>
-# See you soon ! ! 
+# See you soon ! ! !
